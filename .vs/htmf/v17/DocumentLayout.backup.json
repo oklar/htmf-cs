@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Prosjekter\\htmlbuilder\\htmfcsharp\\htmf\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{410CACF4-1CF1-408F-AF83-5604BC24AED3}|HtmfExample.csproj|c:\\prosjekter\\htmlbuilder\\htmfcsharp\\htmf\\controllers\\htmlcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{410CACF4-1CF1-408F-AF83-5604BC24AED3}|HtmfExample.csproj|solutionrelative:controllers\\htmlcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{410CACF4-1CF1-408F-AF83-5604BC24AED3}|HtmfExample.csproj|c:\\prosjekter\\htmlbuilder\\htmfcsharp\\htmf\\htmf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{410CACF4-1CF1-408F-AF83-5604BC24AED3}|HtmfExample.csproj|solutionrelative:htmf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Htmf.cs",
+              "DocumentMoniker": "C:\\Prosjekter\\htmlbuilder\\htmfcsharp\\htmf\\Htmf.cs",
+              "RelativeDocumentMoniker": "Htmf.cs",
+              "ToolTip": "C:\\Prosjekter\\htmlbuilder\\htmfcsharp\\htmf\\Htmf.cs",
+              "RelativeToolTip": "Htmf.cs",
+              "ViewState": "AgIAAHIAAAAAAAAAAAArwIIAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-25T18:10:17.546Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "HtmlController.cs",
+              "DocumentMoniker": "C:\\Prosjekter\\htmlbuilder\\htmfcsharp\\htmf\\Controllers\\HtmlController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HtmlController.cs",
+              "ToolTip": "C:\\Prosjekter\\htmlbuilder\\htmfcsharp\\htmf\\Controllers\\HtmlController.cs",
+              "RelativeToolTip": "Controllers\\HtmlController.cs",
+              "ViewState": "AgIAADEAAAAAAAAAAAAgwEIAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-25T18:07:20.517Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

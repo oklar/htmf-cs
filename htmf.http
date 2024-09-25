@@ -1,0 +1,6 @@
+@htmf_HostAddress = http://localhost:5073
+
+GET {{htmf_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
