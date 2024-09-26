@@ -58,10 +58,6 @@ return Content(hf.Render(), "text/html");
         <div class="flex justify-center h-full space-y-64 bg-gray-100">
             <div>Footer</div>
         </div>
-        <!-- Visual Studio Browser Link -->
-        <script type="text/javascript" src="/_vs/browserLink" async="async" id="__browserLink_initializationData" data-requestId="1ff3f8acc3834070a9b2d50da6dcf34c" data-requestMappingFromServer="false" data-connectUrl="http://localhost:65413/ce6b773f0a4a450099a1742fcb707547/browserLink"></script>
-        <!-- End Browser Link -->
-        <script src="/_framework/aspnetcore-browser-refresh.js"></script>
     </body>
 </html>
 ```
