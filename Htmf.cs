@@ -76,17 +76,20 @@ public class Htmf
         return this;
     }
 
+    public Htmf Span(string innerText = "")
+    {
+        Element("span", innerText);
+        return this;
+    }
+
     public Htmf Div<T>(Expression<Func<T, object>> property)
     {
-        if (!string.IsNullOrEmpty(CurrentTemplateId) && CurrentTemplateElement == null)
-        {
-            Template(CurrentTemplateId);
-        }
+        return TemplateElement<T>("div", property);
+    }
 
-        Element("div");
-        CurrentElement!.Attributes["hf-prop"] = PropertyName(property);
-
-        return this;
+    public Htmf Span<T>(Expression<Func<T, object>> property)
+    {
+        return TemplateElement<T>("span", property);
     }
 
     public Htmf Css(string classes)
@@ -179,37 +182,6 @@ public class Htmf
         return this;
     }
 
-    private Element? FindParent(Element child)
-    {
-        Func<Element, Element, Element> findInTree = null;
-        findInTree = (element, target) =>
-        {
-            foreach (var el in element.Children)
-            {
-                if (el == target)
-                {
-                    return element;
-                }
-
-                var found = findInTree(el, target);
-                if (found != null) return found;
-            }
-
-            return null;
-        };
-
-        foreach (var el in Elements)
-        {
-            var parent = findInTree(el, child);
-            if (parent != null)
-            {
-                return parent;
-            }
-        }
-
-        return null;
-    }
-
     public Htmf H1End()
     {
         return Close();
@@ -266,23 +238,102 @@ public class Htmf
         return $"{openTag}{element.InnerText}{childrenHtmlString}{closeTag}";
     }
 
+    private Element? FindParent(Element child)
+    {
+        Func<Element, Element, Element> findInTree = null;
+        findInTree = (element, target) =>
+        {
+            foreach (var el in element.Children)
+            {
+                if (el == target)
+                {
+                    return element;
+                }
+
+                var found = findInTree(el, target);
+                if (found != null) return found;
+            }
+
+            return null;
+        };
+
+        foreach (var el in Elements)
+        {
+            var parent = findInTree(el, child);
+            if (parent != null)
+            {
+                return parent;
+            }
+        }
+
+        return null;
+    }
+
+    private Htmf TemplateElement<T>(string tag, Expression<Func<T, object>> property)
+    {
+        if (!string.IsNullOrEmpty(CurrentTemplateId) && CurrentTemplateElement == null)
+        {
+            Template(CurrentTemplateId);
+        }
+
+        Element(tag);
+        (string[] FormatStrings, string[] PropertyNames) = PropertyName(property);
+
+
+        CurrentElement!.Attributes["hf-prop"] = string.Join(";", PropertyNames);
+        Text(string.Join("@", FormatStrings));
+
+        return this;
+    }
+
     private static string RandomId()
     {
         return $"id-{Guid.NewGuid()}";
     }
 
-    //public void UpdateTemplate(string templateId, IEnumerable<object> data)
-    //{
-    //    var templateElement = document.GetElementById(templateId);
-    //    var template = templates[templateId];
-
-    //    string result = string.Join("", data.Select(item => template(item)));
-    //    templateElement.InnerHtml = result;
-    //}
-
-    private static string PropertyName<T>(Expression<Func<T, object>> property)
+    private static (string[] FormatStrings, string[] PropertyNames) PropertyName<T>(Expression<Func<T, object>> property)
     {
-        return ((MemberExpression)property.Body).Member.Name;
+        Expression body = property.Body;
+
+        if (body is UnaryExpression unaryExpression)
+        {
+            return ([], [((MemberExpression)unaryExpression.Operand).Member.Name]);
+        }
+
+        if (body is MemberExpression memberExpression)
+        {
+            return ([], [memberExpression.Member.Name]);
+        }
+
+        if (body is MethodCallExpression methodCallExpression)
+        {
+            var formatStrings = new List<string>();
+            var propertyNames = new List<string>();
+
+            foreach (var argument in methodCallExpression.Arguments)
+            {
+                if (argument is MemberExpression memberExpressionLoop)
+                {
+                    propertyNames.Add(memberExpressionLoop.Member.Name);
+                }
+                else if (argument is ConstantExpression constantExpression)
+                {
+                    formatStrings.Add(constantExpression.Value?.ToString() ?? string.Empty);
+                }
+                else if (argument is UnaryExpression unaryExpressionLoop)
+                {
+                    propertyNames.Add(((MemberExpression)unaryExpressionLoop.Operand).Member.Name);
+                }
+                else
+                {
+                    throw new ArgumentException("Unsupported expression type.", nameof(property));
+                }
+            }
+
+            return (formatStrings.ToArray(), propertyNames.ToArray());
+        }
+
+        throw new ArgumentException("Unsupported expression type.", nameof(property));
     }
 }
 
