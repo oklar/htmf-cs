@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HtmfExample")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5eb4e00321d3e79887fa0e40bf06a22336286298")]
 [assembly: System.Reflection.AssemblyProductAttribute("HtmfExample")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HtmfExample")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
