@@ -291,7 +291,3 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-/.vs/htmf/DesignTimeBuild/.dtbcache.v2
-/.vs/htmf/v17/.suo
-/.vs/htmf/v17/DocumentLayout.backup.json
-/.vs/htmf/v17/DocumentLayout.json
