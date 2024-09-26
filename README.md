@@ -48,7 +48,7 @@ return Content(hf.Render(), "text/html");
                 <div>
                     <h2>Product: P-49e3461c-7ca8-4320-9475-5875e1f15977</h2>
                     <div class="text-green-500">Price: 133</div>
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="putData('https://localhost:7031/api/cart/b63a0a05-7678-41fc-b223-4346eb8d8d1e', 'id-a7917bea-fad8-441e-9ae9-c56994ebc142')">Add to cart</button>
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="putData('api/cart/b63a0a05-7678-41fc-b223-4346eb8d8d1e', 'id-a7917bea-fad8-441e-9ae9-c56994ebc142')">Add to cart</button>
                 </div>
             </div>
             <div>
