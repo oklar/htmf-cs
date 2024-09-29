@@ -11,8 +11,12 @@ public class Htmf
     private bool IsPage = false;
     private string PageTitle = string.Empty;
     private List<string> Scripts = [];
+    private string ApiUrl = string.Empty;
 
-    public Htmf() { }
+    public Htmf(string? apiUrl = null)
+    {
+        ApiUrl = apiUrl ?? "";
+    }
 
     private Htmf Element(string tag, string innerText = "")
     {
@@ -23,7 +27,6 @@ public class Htmf
             Attributes = new Dictionary<string, string>(),
             InnerText = innerText,
             Events = new List<string>(),
-            IsTemplate = false,
         };
 
         if (CurrentElement != null)
@@ -39,7 +42,7 @@ public class Htmf
         return this;
     }
 
-    public Htmf Script(string source)
+    public Htmf ScriptHead(string source)
     {
         Scripts.Add(source);
         return this;
@@ -124,9 +127,9 @@ public class Htmf
     {
         if (CurrentElement is not null)
         {
-            string templateId = RandomId();
-            CurrentTemplateId = templateId;
-            CurrentElement.Events.Add($"onclick=\"fetchData('{url}', '{templateId}')\"");
+            CurrentTemplateId = CurrentTemplateId is null ? null : RandomId();
+            CurrentElement.Attributes["hf-get"] = ApiUrl + url;
+            CurrentElement.Attributes["hf-trigger"] = "click";
         }
         return this;
     }
@@ -135,9 +138,20 @@ public class Htmf
     {
         if (CurrentElement is not null)
         {
-            string templateId = RandomId();
-            CurrentTemplateId = templateId;
-            CurrentElement.Events.Add($"onclick=\"putData('{url}', '{templateId}')\"");
+            CurrentTemplateId = CurrentTemplateId is null ? null : RandomId();
+            CurrentElement.Attributes["hf-put"] = ApiUrl + url;
+            CurrentElement.Attributes["hf-trigger"] = "click";
+        }
+        return this;
+    }
+
+    public Htmf Delete(string url)
+    {
+        if (CurrentElement is not null)
+        {
+            CurrentTemplateId = CurrentTemplateId is null ? null : RandomId();
+            CurrentElement.Attributes["hf-delete"] = ApiUrl + url;
+            CurrentElement.Attributes["hf-trigger"] = "click";
         }
         return this;
     }
@@ -145,7 +159,6 @@ public class Htmf
     public Htmf Template(string templateId)
     {
         Element("template").Id(templateId);
-        CurrentElement!.IsTemplate = true;
         CurrentTemplateElement = CurrentElement;
         return this;
     }
@@ -154,7 +167,7 @@ public class Htmf
     {
         if (CurrentElement is not null)
         {
-            CurrentElement.Attributes["hf-target-id"] = templateId;
+            CurrentElement.Attributes["hf-target"] = templateId;
         }
         return this;
     }
@@ -162,6 +175,11 @@ public class Htmf
     public Htmf Close()
     {
         if (CurrentElement is null) return this;
+
+        if (CurrentElement.Tag == "template")
+        {
+            CurrentTemplateId = null;
+        }
 
         var parent = FindParent(CurrentElement);
         if (parent != null)
@@ -209,10 +227,15 @@ public class Htmf
             var startPage = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" 
                 + RenderScripts() + "<title>" + PageTitle + "</title></head><body>";
             var endPage = "</body></html>\r\n";
-            return startPage + string.Join("", Elements.Select(element => RenderElement(element))) + endPage;
+            return startPage + string.Join("", Elements.Select(element => RenderElement(element))) + GetHtmfScripts() + endPage;
         }
 
         return string.Join("", Elements.Select(element => RenderElement(element))) + RenderScripts();
+    }
+
+    public string GetHtmfScripts()
+    {
+        return "<script src=\"htmf.js\"></script>";
     }
 
     private string RenderScripts()
@@ -271,7 +294,7 @@ public class Htmf
 
     private Htmf TemplateElement<T>(string tag, Expression<Func<T, object>> property)
     {
-        if (!string.IsNullOrEmpty(CurrentTemplateId) && CurrentTemplateElement == null)
+        if (string.IsNullOrEmpty(CurrentTemplateId))
         {
             Template(CurrentTemplateId);
         }
@@ -281,7 +304,7 @@ public class Htmf
 
 
         CurrentElement!.Attributes["hf-prop"] = string.Join(";", PropertyNames);
-        Text(string.Join("@", FormatStrings));
+        Text(string.Join("", FormatStrings));
 
         return this;
     }
@@ -297,12 +320,12 @@ public class Htmf
 
         if (body is UnaryExpression unaryExpression)
         {
-            return ([], [((MemberExpression)unaryExpression.Operand).Member.Name]);
+            return ([], [GetFullPropertyPath((MemberExpression)unaryExpression.Operand)]);
         }
 
         if (body is MemberExpression memberExpression)
         {
-            return ([], [memberExpression.Member.Name]);
+            return ([], [GetFullPropertyPath(memberExpression)]);
         }
 
         if (body is MethodCallExpression methodCallExpression)
@@ -314,7 +337,7 @@ public class Htmf
             {
                 if (argument is MemberExpression memberExpressionLoop)
                 {
-                    propertyNames.Add(memberExpressionLoop.Member.Name);
+                    propertyNames.Add(GetFullPropertyPath(memberExpressionLoop));
                 }
                 else if (argument is ConstantExpression constantExpression)
                 {
@@ -322,7 +345,7 @@ public class Htmf
                 }
                 else if (argument is UnaryExpression unaryExpressionLoop)
                 {
-                    propertyNames.Add(((MemberExpression)unaryExpressionLoop.Operand).Member.Name);
+                    propertyNames.Add(GetFullPropertyPath((MemberExpression)unaryExpressionLoop.Operand));
                 }
                 else
                 {
@@ -335,13 +358,24 @@ public class Htmf
 
         throw new ArgumentException("Unsupported expression type.", nameof(property));
     }
+
+    private static string GetFullPropertyPath(MemberExpression expression)
+    {
+        var path = new List<string> { expression.Member.Name };
+        while (expression.Expression is MemberExpression parentExpression)
+        {
+            path.Add(parentExpression.Member.Name);
+            expression = parentExpression;
+        }
+        path.Reverse();
+        return string.Join(".", path);
+    }
 }
 
 public record Element()
 {
     public required string Tag { get; set; }
-    public string InnerText { get; set; } = "";
-    public bool IsTemplate { get; set; } = false;
+    public string InnerText { get; set; } = string.Empty;
     public List<Element> Children { get; set; } = [];
     public Dictionary<string, string> Attributes { get; set; } = [];
     public List<string> Events { get; set; } = [];
