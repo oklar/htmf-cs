@@ -1,4 +1,3 @@
-using HtmfExample;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HtmfExample.Controllers
@@ -54,13 +53,12 @@ namespace HtmfExample.Controllers
             var hf = new Htmf("https://localhost:7031")
 
             .Page("Hello HTMF!")
-            .ScriptHead("https://cdn.tailwindcss.com")
+            .TailwindStyle()
             
             .Div().Css("flex flex-row justify-center space-x-64 h-full w-full")
-                
                 .Div("A list of products:");
 
-            string myCartTemplateId = Guid.NewGuid().ToString();
+            string myCartTemplateId = "my-cart-template-id";
             foreach (Product product in Products)
             {
                 hf
@@ -79,22 +77,27 @@ namespace HtmfExample.Controllers
 
                 .Div()
                     .Div($"My Cart has {Items.Sum(x => x.Quantity)} items")
-                            .Div<Item>(item => $"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}").Css("text-blue-500")._Div()
-                            .Button("Remove item").Css("bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded")
-                                .Delete($"/api/items/{myCartTemplateId}/products") // TODO itemsId with template
+                        .Template().Id(myCartTemplateId)
+                            .Div<Item>(item => $"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}").Css("text-blue-500")
+                            ._Div()
+                            .Button("Remove Quantity").Css("bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded")
+                                .Delete<Item>(item => $"/api/items/{item.Id}/products")
                                     .Target(myCartTemplateId)
                             ._Button()
-                        .Id(myCartTemplateId)
-                        .Close();
+                        ._Template();
 
+            // SSR
             foreach (Item item in Items)
             {
                 hf
-                        .Div($"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}").Css("text-blue-500").Id(item.Id.ToString())._Div()
-                        .Button("Remove item").Css("bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded")
+                        .Div($"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}").Css("text-blue-500")
+                            .ResourceId(item.Id.ToString())
+                        ._Div()
+                        .Button("Remove Quantity").Css("bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded")
                             .Delete($"/api/items/{item.Id}/products")
                                 .Target(myCartTemplateId)
                         ._Button();
+                // hf.FromTemplate(myCartTemplateId);
             }
 
             hf
@@ -138,20 +141,20 @@ namespace HtmfExample.Controllers
 
         [HttpDelete]
         [Route("api/items/{itemsId:guid}/products")]
-        public ActionResult DeleteOneProductFromItem(Guid itemsId)
+        public ActionResult RemoveOneQuantityFromItem(Guid itemsId)
         {
-            Item? item = Items.FirstOrDefault(x => x.Id == itemsId);
-            if (item is not null)
+            Item? currentItem = Items.FirstOrDefault(x => x.Id == itemsId);
+            if (currentItem is not null)
             {
-                item.Quantity--;
-                if (item.Quantity == 0)
+                currentItem.Quantity--;
+                if (currentItem.Quantity == 0)
                 {
-                    item = null;
+                    currentItem = null;
                     Items = Items.Where(item => item.Id != itemsId).ToList();
                 }
             }
 
-            return item is null ? NoContent() : Ok(item);
+            return currentItem is null ? NoContent() : Ok(currentItem);
         }
 
         [HttpDelete]

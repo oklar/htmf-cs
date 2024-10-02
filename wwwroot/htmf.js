@@ -62,29 +62,40 @@ function updateTargetElement(targetId, data, element) {
 /**
  * Deletes a template element and its associated elements from the DOM.
  * @param {HTMLTemplateElement} templateElement - The template and associated elements.
- * @param {Element} element - The element that triggered the deletion.
+ * @param {Element} triggeredElement - The element that triggered the deletion.
  */
-function deleteTemplateElement(templateElement, element) {
+function deleteTemplateElement(templateElement, triggeredElement) {
   if (templateElement.parentElement === null) {
     return;
   }
+  // todo: improvments
 
-  const parentElement = templateElement.parentElement;
-  let currentElement = element;
-  while (!currentElement.hasAttribute("id")) {
-    currentElement = currentElement.previousElementSibling;
-    if (currentElement === null) break;
+  // Find the sibling element of templateElement that contains the triggeredElement
+  let siblingToRemove = templateElement.nextElementSibling;
+  let currentFirstElementResource = null;
+  while (siblingToRemove) {
+    currentFirstElementResource = siblingToRemove.hasAttribute("hf-id")
+      ? siblingToRemove
+      : currentFirstElementResource;
+    if (
+      siblingToRemove === triggeredElement ||
+      siblingToRemove.contains(triggeredElement)
+    ) {
+      break;
+    }
+    siblingToRemove = siblingToRemove.nextElementSibling;
   }
 
-  if (templateElement.content.children.length === 1) {
-    parentElement.querySelector(`[id="${currentElement.id}"]`).remove();
-    return;
-  }
-
+  // remove all related children;
+  let nextElement = currentFirstElementResource.nextElementSibling;
   for (let i = 0; i < templateElement.content.children.length; i++) {
-    var nextElementSibling = currentElement.nextElementSibling;
-    parentElement.removeChild(currentElement);
-    currentElement = nextElementSibling;
+    if (currentFirstElementResource === null) {
+      break;
+    }
+
+    currentFirstElementResource.remove();
+    currentFirstElementResource = nextElement;
+    nextElement = nextElement?.nextElementSibling;
   }
 }
 
@@ -94,22 +105,48 @@ function deleteTemplateElement(templateElement, element) {
  * @param {Object} data - The data object containing values to insert.
  */
 function updateClonedElements(clone, data) {
-  const clonedElementsWithProps = clone.querySelectorAll("[hf-prop]");
+  const clonedElementsWithProps = clone.querySelectorAll(
+    "[hf-prop],[hf-prop-action]"
+  );
 
-  clonedElementsWithProps.forEach((clonedElement) => {
-    const hfProp = clonedElement.getAttribute("hf-prop");
-    const props = hfProp.split(";");
-    let text = clonedElement.innerText;
-
-    props.forEach((prop, index) => {
+  const replaceProps = (text, props) => {
+    return props.reduce((acc, prop, index) => {
       const value = getNestedPropertyValue(data, prop);
-      text = text.replace(`{${index}}`, value !== undefined ? value : "");
-    });
-    clonedElement.innerText = text;
-    //clonedElement.removeAttribute("hf-prop");
+      return acc.replace(`{${index}}`, value !== undefined ? value : "");
+    }, text);
+  };
 
-    if (data.id !== undefined || data.Id !== undefined) {
-      clonedElement.setAttribute("id", data.id || data.Id);
+  clonedElementsWithProps.forEach((clonedElement, index) => {
+    const hfPropAction = clonedElement.getAttribute("hf-prop-action");
+
+    if (hfPropAction) {
+      // todo: this will only take the first found hf attribute method
+      const httpMethods = ["get", "post", "put", "patch", "delete"];
+      const url = httpMethods.reduce(
+        (acc, method) => acc || clonedElement.getAttribute(`hf-${method}`),
+        null
+      );
+
+      if (url) {
+        const props = hfPropAction.split(";");
+        const updatedUrl = replaceProps(url, props);
+
+        const method = httpMethods.find((m) =>
+          clonedElement.hasAttribute(`hf-${m}`)
+        );
+        clonedElement.setAttribute(`hf-${method}`, updatedUrl);
+      }
+    }
+
+    const hfProp = clonedElement.getAttribute("hf-prop");
+    if (hfProp) {
+      const props = hfProp.split(";");
+      clonedElement.innerText = replaceProps(clonedElement.innerText, props);
+    }
+
+    const id = data.id ?? data.Id;
+    if (id !== undefined && index === 0) {
+      clonedElement.setAttribute("hf-id", id);
     }
   });
 }
@@ -149,45 +186,25 @@ function getNestedPropertyValue(obj, propPath) {
 function replaceOrAppendClone(parentElement, clone, id) {
   // const cloneChildCount = clone.children.length;
   update(clone.children);
-  if (id) {
-    // query selector all, but only top level children
-    const childrenWithId = parentElement.querySelectorAll(`[id="${id}"]`);
-
-    if (childrenWithId.length > 0) {
-      const hfPropsClones = clone.querySelectorAll("[hf-prop]");
-
-      for (let i = 0; i < childrenWithId.length; i++) {
-        parentElement.replaceChild(hfPropsClones[i], childrenWithId[i]);
-        //update(hfPropsClones[i]);
-      }
-
-      /*
-      if (cloneChildCount == 1) {
-        parentElement.replaceChild(clone.children[0], existingElement);
-      } else {
-        
-        let nextElement = existingElement.nextElementSibling;
-        parentElement.replaceChild(clone.children[0], existingElement);
-
-        for (let i = 1; i < cloneChildCount; i++) {
-          // todo: how to handle this without a reflow for each element?
-          if (nextElement === null || nextElement === undefined) {
-            parentElement.appendChild(clone.children[i]);
-          } else if (nextElement.hasAttribute("id")) {
-            parentElement.insertBefore(clone.children[i], nextElement);
-          } else {
-            let currentElement = nextElement;
-            nextElement = nextElement.nextElementSibling;
-            parentElement.replaceChild(clone.children[i], currentElement);
-          }
-        }
-      }
-      */
-    } else {
-      parentElement.appendChild(clone);
-    }
-  } else {
+  if (id === null || id === undefined) {
     parentElement.appendChild(clone);
+    console.warn("No resource identifier found. Appending to list...");
+    return;
+  }
+
+  // query selector all, but only top level children
+  let firstElement = parentElement.querySelector(`[hf-id="${id}"]`);
+
+  if (firstElement === null) {
+    parentElement.appendChild(clone);
+    return;
+  }
+
+  var nextElement = firstElement.nextElementSibling;
+  while (clone.children.length !== 0) {
+    parentElement.replaceChild(clone.children[0], firstElement);
+    firstElement = nextElement;
+    nextElement = firstElement?.nextElementSibling;
   }
 }
 
