@@ -1,6 +1,6 @@
 ﻿How does templates in HTMF react to https verbs?
 
-The HTTP requests manipulates the collection where the <template><template/> is located. 
+The HTTP requests manipulates the collection where the template element is located. 
 
 1. Get -> Appends already existing resources in the collection
 
