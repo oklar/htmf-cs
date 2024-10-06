@@ -15,7 +15,6 @@ namespace HtmfExample.Controllers
         public Product(string name, string id)
         {
             Id = new Guid(id);
-            Tags = [];
             Name = name;
             Price = (int)Random.Shared.NextInt64(5, 200);
         }
@@ -23,12 +22,6 @@ namespace HtmfExample.Controllers
         public Guid Id { get; set; }
         public int Price { get; set; }
         public string Name { get; set; }
-        public List<Tag> Tags { get; set; }
-    }
-
-    public class Tag()
-    {
-        public string Text { get; set; }
     }
 
     [ApiController]

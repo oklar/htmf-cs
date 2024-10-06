@@ -1,4 +1,20 @@
-﻿```csharp
+﻿How does templates in HTMF react to https verbs?
+
+The HTTP requests manipulates the collection where the <template><template/> is located. 
+
+1. Get -> Appends already existing resources in the collection
+
+2. Post -> Appends a newly created resource in the collection
+
+3. Put -> Updates existing resource or appends newly created resource in the collection 
+
+4. Patch -> Updates specific fields on an existing resource in the collection
+
+5. Delete -> Removes the resource from the collection 
+
+Optionally send 204 No Content response from any of the verbs except POST, deletes the resource.
+
+```csharp
 var hf = new Htmf()
 
 .Page("Hello HTMF!")
