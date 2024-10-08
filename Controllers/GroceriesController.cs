@@ -41,6 +41,28 @@ namespace HtmfExample.Controllers
         public static List<Item> Items = [];
 
         [HttpGet]
+        [Route("example")]
+        public ActionResult ExamplePage()
+        {
+            return Content(new Htmf().Page().Div("Example page").Render(), "text/html");
+        }
+
+        [HttpGet]
+        [Route("navigate")]
+        public ActionResult NavigateExamplePage()
+        {
+            return Content(new Htmf("https://localhost:7031")
+                .Page()
+                .TailwindStyle()
+                .Div("Click here to navigate to /example")
+                .Navigate("/example")
+                .Css("bg-blue-500 hover:bg-blue-700")
+                .Render(), 
+                "text/html"
+            );
+        }
+
+        [HttpGet]
         public ActionResult Home()
         {
             var hf = new Htmf("https://localhost:7031")

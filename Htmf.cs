@@ -86,6 +86,12 @@ public class Htmf
         return this;
     }
 
+    public Htmf A(string innerText = "")
+    {
+        Element("a", innerText);
+        return this;
+    }
+
     public Htmf Template(string innerText = "")
     {
         Element("template", innerText);
@@ -101,6 +107,27 @@ public class Htmf
     public Htmf Span<T>(Expression<Func<T, object>> property)
     {
         return TemplateElement<T>("span", property);
+    }
+
+    public Htmf Navigate(string url)
+    {
+        if (CurrentElement is not null)
+        {
+            CurrentElement.Attributes["hf-nav"] = ApiUrl + url;
+            CurrentElement.Attributes["hf-trigger"] = "click";
+        }
+
+        return this;
+    }
+
+    public Htmf Href(string href)
+    {
+        if (CurrentElement is not null)
+        {
+            CurrentElement.Attributes["href"] = href;
+        }
+
+        return this;
     }
 
     public Htmf Css(string classes)

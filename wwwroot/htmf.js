@@ -16,7 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
 async function update(elements) {
   for (let i = 0; i < elements.length; i++) {
     const element = elements[i];
+    const hfNavigate = element.getAttribute("hf-nav");
     const hfPut = element.getAttribute("hf-put");
+    const hfGet = element.getAttribute("hf-get");
     const hfDelete = element.getAttribute("hf-delete");
     const hfTrigger = element.getAttribute("hf-trigger");
     const hfTarget = element.getAttribute("hf-target");
@@ -34,6 +36,17 @@ async function update(elements) {
         if (hfTarget) {
           updateTargetElement(hfTarget, data, element);
         }
+      });
+    } else if (hfGet) {
+      element.addEventListener(hfTrigger || "click", async () => {
+        const data = await getData(hfGet);
+        if (hfTarget) {
+          updateTargetElement(hfTarget, data, element);
+        }
+      });
+    } else if (hfNavigate) {
+      element.addEventListener(hfTrigger || "click", async () => {
+        window.location.href = hfNavigate;
       });
     }
   }
@@ -226,6 +239,14 @@ async function putData(url = "", data = {}) {
       body: JSON.stringify(data),
     });
 
+    if (response.status === 204) {
+      return null;
+    }
+
+    if (response.redirected || response.type === "opaqueredirect") {
+      return undefined;
+    }
+
     // Check if the response is OK (status 200-299)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -255,13 +276,48 @@ async function deleteData(url = "") {
       },
     });
 
+    if (response.status === 204) {
+      return null;
+    }
+
+    if (response.redirected || response.type === "opaqueredirect") {
+      return undefined;
+    }
+
     // Check if the response is OK (status 200-299)
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
+    return await response.json();
+  } catch (error) {
+    console.error("Error:", error); // Handle any errors
+    throw error;
+  }
+}
+
+async function getData(url = "") {
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    // todo: better return handling on all the http verbs
+
     if (response.status === 204) {
       return null;
+    }
+
+    if (response.redirected || response.type === "opaqueredirect") {
+      return undefined;
+    }
+
+    // Check if the response is OK (status 200-299)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     return await response.json();
