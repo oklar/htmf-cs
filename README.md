@@ -167,28 +167,52 @@ foreach (Product product in Products)
         .Div("Product", "text-red-500",
             H2($"Product: {product.Name}").
             Div($"Price: {product.Price}", "text-green-500",
-                Button(
-                    Text("Add to cart")
-                    .Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                Button("Add to cart", "bg-blue-500 font-bold py-2 px-4 rounded") // # what happens if there is no innerText?
                     .Put($"/api/items/products/{product.Id}")
                     .Target(myCartTemplateId)
                 )
             )
         );
     
-    // what if .Css is at the end?
+    // what if we put .Css optionally at the end?
     hf
         .Div("Product",
             H2($"Product: {product.Name}").
             Div($"Price: {product.Price}",
                 Button("Add to cart")
-                .Css("bg-blue-500 font-bold py-2 px-4 rounded") // #
                 .Put($"/api/items/products/{product.Id}")
                 .Target(myCartTemplateId)
+                .Css("bg-blue-500 font-bold py-2 px-4 rounded")
             ).Css("text-green-500")
         ).Css("text-red-500");
 
-    // original -- close only when it is important?
+    // what if .Css is at the end? Example 2
+    hf
+        .Div("Product",
+            H2($"Product: {product.Name}").
+            Div($"Price: {product.Price}",
+                Button() // no innerText
+                .Put($"/api/items/products/{product.Id}")
+                .Target(myCartTemplateId)
+                .Css("bg-blue-500 font-bold py-2 px-4 rounded")
+            ).Css("text-green-500")
+        ).Css("text-red-500");
+
+    // Example summary:
+    // - Risk of lost context since .Css (or other .Attributes functions) is N (7 in this case) lines away
+    hf
+        .Div("Product",
+            H2($"Product: {product.Name}").
+            Div($"Price: {product.Price}",
+                Button("Add to cart")
+                .Put($"/api/items/products/{product.Id}")
+                .Target(myCartTemplateId)
+                .Css("bg-blue-500 font-bold py-2 px-4 rounded")
+            ).Css("text-green-500")
+        ).Css("text-red-500");
+
+    // Improvements:
+    // original --
     hf
         .Div("Product").Css("text-red-500")
             .H2($"Name: {product.Name}")._H2()
@@ -200,7 +224,7 @@ foreach (Product product in Products)
             ._Div()
         ._Div();
 
-    // -->
+    // close only when it is important? -->
     hf
         .Div("Product").Css("text-red-500")
             .H2($"Name: {product.Name}") // <h2>Name: Shoe</h2>
@@ -208,8 +232,9 @@ foreach (Product product in Products)
                 .Button("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
                     .Put($"/api/items/products/{product.Id}")
                     .Target(myCartTemplateId)
-                //.Close() // not needed as ._Div() is present
+                //.Close() // (.Close closes </> last .Element) not needed as ._Div() is present
             ._Div()
+            // if we wrap h2 with ._H2() here from line 3 we wouldn't need the ._Div() above
         ._Div();
 
 }
