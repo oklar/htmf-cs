@@ -125,26 +125,26 @@ foreach (Product product in Products)
     // what if we only allowed arrow functions in element functions?
     hf
         .Div((div) => div.
-            H2($"Product: {product.Name}").
+            H2().Text($"Product: {product.Name}").
             Div((div) => div.
-                Button("Add to cart")
-                    .Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                Button()
                     .Put($"/api/items/products/{product.Id}")
                     .Target(myCartTemplateId)
+                    .Text("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
             ).Text($"Price: {product.Price}").Css("text-green-500")
         ).Text("Product").Css("text-red-500");
 
-    // what if element functions were recognized at top level?
+    // what if element functions were recognized at top level and only allowed first param to be element?
     hf
         .Div(
-            H2($"Product: {product.Name}").
+            H2().Text($"Product: {product.Name}").
             Div(
-                Button("Add to cart")
-                    .Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                Button()
                     .Put($"/api/items/products/{product.Id}")
                     .Target(myCartTemplateId)
+                    .Text("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
             ).Text($"Price: {product.Price}").Css("text-green-500")
-        ).Text("Product").Css("text-red-500");
+        ).Text("Product").Css("text-red-500"); // # div is too far away
 
     // can we improve .Text()?
     hf
@@ -198,18 +198,16 @@ foreach (Product product in Products)
             ).Css("text-green-500")
         ).Css("text-red-500");
 
-    // Example summary:
-    // - Risk of lost context since .Css (or other .Attributes functions) is N (7 in this case) lines away
-    hf
-        .Div("Product",
-            H2($"Product: {product.Name}").
-            Div($"Price: {product.Price}",
-                Button("Add to cart")
-                .Put($"/api/items/products/{product.Id}")
-                .Target(myCartTemplateId)
-                .Css("bg-blue-500 font-bold py-2 px-4 rounded")
-            ).Css("text-green-500")
-        ).Css("text-red-500");
+    // Example summary (Function in functions):
+    // - Risk of lost context since .Css (or other .Attributes functions) is N lines away
+    // - Arrow functions can increase readability, with the cost of more code characters
+    // - Top level functions decreases code characters at the expense of adding additional 
+    // params or adding imo confusing Text Div(Text("Hello").Button(...
+    // ** However, it may be the price one must pay in order to not worry about the </> 
+    // closing tags and avoid using multiple params.
+    // 
+    // 
+    // -> Only use arrow functions when it is important, like type safety on templates
 
     // Improvements:
     // original --
@@ -235,6 +233,17 @@ foreach (Product product in Products)
                 //.Close() // (.Close closes </> last .Element) not needed as ._Div() is present
             ._Div()
             // if we wrap h2 with ._H2() here from line 3 we wouldn't need the ._Div() above
+        ._Div();
+
+    // remove comments
+    hf
+        .Div("Product").Css("text-red-500")
+            .H2($"Name: {product.Name}")
+            .Div($"Price: {product.Price}").Css("text-green-500")
+                .Button("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+            ._Div()
         ._Div();
 
 }
