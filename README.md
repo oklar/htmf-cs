@@ -77,3 +77,140 @@ return Content(hf.Render(), "text/html");
     </body>
 </html>
 ```
+
+# Builder example: Is it improvable from the original?
+
+```csharp
+var hf = new Htmf("https://localhost:7031")
+string myCartTemplateId = "my-cart-template-id";
+foreach (Product product in Products)
+{
+    // original
+    hf
+        .Div("Product").Css("text-red-500")
+            .H2($"Name: {product.Name}")._H2()
+            .Div($"Price: {product.Price}").Css("text-green-500")
+                .Button("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+                ._Button()
+            ._Div()
+        ._Div();
+
+    // what about arrow functions?
+    hf
+        .Div("Product", (div) => {
+            return div.Css("text-red-500").
+                H2($"Product: {product.Name}").
+                Div((div) => 
+                    return div.Text($"Price: {product.Price}").Css("text-green-500")
+                        Button("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                            .Put($"/api/items/products/{product.Id}")
+                            .Target(myCartTemplateId)
+                )
+            }
+        );
+
+    // remove return
+    hf
+        .Div("Product", (div) => div.Css("text-red-500").
+            H2($"Product: {product.Name}").
+            Div((div) => div.Text($"Price: {product.Price}").Css("text-green-500").
+                Button("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+            )
+        );
+
+    // what if we only allowed arrow functions in element functions?
+    hf
+        .Div((div) => div.
+            H2($"Product: {product.Name}").
+            Div((div) => div.
+                Button("Add to cart")
+                    .Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+            ).Text($"Price: {product.Price}").Css("text-green-500")
+        ).Text("Product").Css("text-red-500");
+
+    // what if element functions were recognized at top level?
+    hf
+        .Div(
+            H2($"Product: {product.Name}").
+            Div(
+                Button("Add to cart")
+                    .Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+            ).Text($"Price: {product.Price}").Css("text-green-500")
+        ).Text("Product").Css("text-red-500");
+
+    // can we improve .Text()?
+    hf
+        .Div(
+            Text("Product").Css("text-red-500").
+            H2(Text($"Product: {product.Name}")).
+            Div(
+                Text($"Price: {product.Price}").
+                Button(
+                    Text("Add to cart")
+                    .Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+                )
+            )
+        );
+
+    // can we improve .Css()?
+    hf
+        .Div("Product", "text-red-500",
+            H2($"Product: {product.Name}").
+            Div($"Price: {product.Price}", "text-green-500",
+                Button(
+                    Text("Add to cart")
+                    .Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+                )
+            )
+        );
+    
+    // what if .Css is at the end?
+    hf
+        .Div("Product",
+            H2($"Product: {product.Name}").
+            Div($"Price: {product.Price}",
+                Button("Add to cart")
+                .Css("bg-blue-500 font-bold py-2 px-4 rounded") // #
+                .Put($"/api/items/products/{product.Id}")
+                .Target(myCartTemplateId)
+            ).Css("text-green-500")
+        ).Css("text-red-500");
+
+    // original -- close only when it is important?
+    hf
+        .Div("Product").Css("text-red-500")
+            .H2($"Name: {product.Name}")._H2()
+            .Div($"Price: {product.Price}").Css("text-green-500")
+                .Button("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+                ._Button()
+            ._Div()
+        ._Div();
+
+    // -->
+    hf
+        .Div("Product").Css("text-red-500")
+            .H2($"Name: {product.Name}") // <h2>Name: Shoe</h2>
+            .Div($"Price: {product.Price}").Css("text-green-500")
+                .Button("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+                //.Close() // not needed as ._Div() is present
+            ._Div()
+        ._Div();
+
+}
+```
