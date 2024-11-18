@@ -63,9 +63,31 @@ namespace HtmfExample.Controllers
         }
 
         [HttpGet]
+        [Route("testing")]
+        public ActionResult GetItems()
+        {
+            var b = new Htmf2();
+            var result = b
+                .H1(b => b.Css("text-red-400")
+                    .Div(b => b.Css("text-green-400")
+                        .H1("hello").Css("text-blue-500")
+                        .Div("world")
+                    )
+                )
+                .Div("yes")
+                .Build();
+
+            return Content(
+                result, 
+                "text/html"
+            );
+        }
+
+        [HttpGet]
         public ActionResult Home()
         {
-            var hf = new Htmf("https://localhost:7031")
+            
+            var f = new Htmf("https://localhost:7031")
 
             .Page("Hello HTMF!")
             .TailwindStyle()
@@ -76,7 +98,7 @@ namespace HtmfExample.Controllers
             string myCartTemplateId = "my-cart-template-id";
             foreach (Product product in Products)
             {
-                hf
+                f
                     .Div()
                         .H2($"Product: {product.Name}")._H2()
                         .Div($"Price: {product.Price}").Css("text-green-500")._Div()
@@ -87,7 +109,7 @@ namespace HtmfExample.Controllers
                     ._Div();
             }
 
-            hf
+            f
                 ._Div()
 
                 .Div()
@@ -104,7 +126,7 @@ namespace HtmfExample.Controllers
             // SSR
             foreach (Item item in Items)
             {
-                hf
+                f
                         .Div($"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}").Css("text-blue-500")
                             .ResourceId(item.Id.ToString())
                         ._Div()
@@ -115,13 +137,13 @@ namespace HtmfExample.Controllers
                 // hf.FromTemplate(myCartTemplateId);
             }
 
-            hf
+            f
             .CloseAll()
             
             .Div().Css("flex justify-center h-64 bg-gray-300")
                 .Div("Home Page");
 
-            return Content(hf.Render(), "text/html");
+            return Content(f.Render(), "text/html");
         }
 
         [HttpPut]

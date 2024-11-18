@@ -246,5 +246,16 @@ foreach (Product product in Products)
             ._Div()
         ._Div();
 
+    // contender
+    f.
+        Div(Text("Product").Css("text-red-500").
+            H2(Text($"Product: {product.Name}")).
+            Div(Text($"Price: {product.Price}").
+                Button(Text("Add to cart").Css("bg-blue-500 font-bold py-2 px-4 rounded")
+                    .Put($"/api/items/products/{product.Id}")
+                    .Target(myCartTemplateId)
+                )
+            )
+        );
 }
 ```

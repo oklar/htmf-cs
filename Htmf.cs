@@ -338,6 +338,18 @@ public class Htmf
         return $"{openTag}{element.InnerText}{childrenHtmlString}{closeTag}";
     }
 
+    private void Loop(Func<Element, Element> action, List<Element> elements)
+    {
+        foreach (Element el in elements)
+        {
+            action(el);
+            if (el.Children.Count > 0)
+            {
+                Loop(action, el.Children);
+            }
+        }
+    }
+
     private Element? FindParent(Element child)
     {
         // todo: improve by setting a reference parent in element
