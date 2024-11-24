@@ -28,9 +28,10 @@ namespace HtmfExample.Controllers
     [Route("")]
     public class GroceriesController : ControllerBase
     {
+        public static Product banana = new Product("Banana", "35965ad7-261c-47fb-adbf-4da74a6c5434");
 
         public static List<Product> Products = [
-            new Product("Banana", "35965ad7-261c-47fb-adbf-4da74a6c5434"),
+            banana,
             new Product("Grapes","3eac00f5-3aa5-4014-90ee-e541ecff3e5b"),
             new Product("Pineapple", "b86c3eef-01cc-4cc1-a409-8c7d304c216f"),
             new Product("Lime", "56789640-1723-4a46-9c2d-5ccd3958afed"),
@@ -38,7 +39,13 @@ namespace HtmfExample.Controllers
             new Product("Watermelon", "59e90e4f-d6fc-4d57-bd10-40f020cec65b")
         ];
 
-        public static List<Item> Items = [];
+        public static List<Item> Items = [
+            new Item
+            {
+                Product = banana,
+                Quantity = 1,
+            }
+        ];
 
         [HttpGet]
         [Route("example")]
@@ -84,13 +91,33 @@ namespace HtmfExample.Controllers
         }
 
         [HttpGet]
+        [Route("template")]
+        public ActionResult GetTemplate()
+        {
+            var b = new Htmf2();
+            var result = b
+                .CreateTemplate(Items, b => b
+                    .Div(b => b
+                        .Div(b => b.H1("test312"))
+                    )
+                    .DivT(item => $"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}")
+                )
+                .H1("hello, world!");
+
+            return Content(
+                result.Build(),
+                "text/html"
+            );
+        }
+
+        [HttpGet]
         public ActionResult Home()
         {
             
             var f = new Htmf("https://localhost:7031")
 
             .Page("Hello HTMF!")
-            .TailwindStyle()
+            //.TailwindStyle()
             
             .Div().Css("flex flex-row justify-center space-x-64 h-full w-full")
                 .Div("A list of products:");
