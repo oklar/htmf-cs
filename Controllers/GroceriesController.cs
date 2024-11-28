@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
+using static HtmfExample.MicroWind;
+
 namespace HtmfExample.Controllers
 {
     public class Item
@@ -29,12 +31,13 @@ namespace HtmfExample.Controllers
     public class GroceriesController : ControllerBase
     {
         public static Product banana = new Product("Banana", "35965ad7-261c-47fb-adbf-4da74a6c5434");
+        public static Product lime = new Product("Lime", "b86c3eef-01cc-4cc1-a409-8c7d304c216f");
 
         public static List<Product> Products = [
             banana,
+            lime,
             new Product("Grapes","3eac00f5-3aa5-4014-90ee-e541ecff3e5b"),
             new Product("Pineapple", "b86c3eef-01cc-4cc1-a409-8c7d304c216f"),
-            new Product("Lime", "56789640-1723-4a46-9c2d-5ccd3958afed"),
             new Product("Apple", "aba9994a-508a-44cc-b063-8db6ea16cd9c"),
             new Product("Watermelon", "59e90e4f-d6fc-4d57-bd10-40f020cec65b")
         ];
@@ -44,6 +47,11 @@ namespace HtmfExample.Controllers
             {
                 Product = banana,
                 Quantity = 1,
+            },
+            new Item
+            {
+                Product = lime,
+                Quantity = 2,
             }
         ];
 
@@ -96,13 +104,16 @@ namespace HtmfExample.Controllers
         {
             var b = new Htmf2();
             var result = b
+                //.Page("test")
                 .CreateTemplate(Items, b => b
                     .Div(b => b
-                        .Div(b => b.H1("test312"))
+                        .Div(b => b
+                            .H1("test312").Css(TextGreen700)
+                        )
                     )
-                    .DivT(item => $"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}")
+                    .DivT(item => $"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}").Css(TextRed400)
                 )
-                .H1("hello, world!");
+                .H1("hello, world!!").Css(TextLightBlue700);
 
             return Content(
                 result.Build(),

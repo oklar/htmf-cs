@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using System.Xml.Linq;
 
 namespace HtmfExample;
+
 
 public class HtmfTemplate<T>
 {
@@ -162,6 +162,12 @@ public class HtmfTemplate<T>
         return this;
     }
 
+    public HtmfTemplate<T> Css(params MicroWind[] mwClasses)
+    {
+        FromBuilder.Css(mwClasses);
+        return this;
+    }
+
     public HtmfTemplate<T> Delete(string url)
     {
         FromBuilder.Delete(url);
@@ -207,13 +213,22 @@ public class HtmfTemplate<T>
 
 public class Htmf2 : IHtmf2
 {
+    private bool IsPage = false;
+    private string PageTitle = string.Empty;
     protected List<Element2> Elements = [];
     protected Stack<Element2> elementStack = new();
     public string ApiUrl = "";
-
+    private Dictionary<string, string> cssClasses = [];
     public Htmf2(string? apiUrl = null)
     {
         ApiUrl = apiUrl ?? "";
+    }
+
+    public Htmf2 Page(string title = "")
+    {
+        IsPage = true;
+        PageTitle = title;
+        return this;
     }
 
     public Htmf2 Element(string tag, string innerText = "")
@@ -356,6 +371,20 @@ public class Htmf2 : IHtmf2
         return this;
     }
 
+    public Htmf2 Css(params MicroWind[] mwClasses)
+    {
+        foreach (var cssClass in mwClasses)
+        {
+            cssClasses[cssClass.ClassName] = cssClass.CssStyleOutput;
+        }
+
+        if (elementStack.Count != 0)
+        {
+            elementStack.Peek().Attributes["class"] = string.Join(" ", mwClasses.Select(mw => mw.ClassName));
+        }
+        return this;
+    }
+
     public Htmf2 SetAttribute(string attribute, string value)
     {
         if (elementStack.Count != 0)
@@ -427,7 +456,25 @@ public class Htmf2 : IHtmf2
 
     public string Build()
     {
-        return string.Join("", Elements.Select(BuildElement));
+        if (IsPage)
+        {
+            var startPage = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+                /*+ RenderScripts()*/ + "<title>" + PageTitle + "</title>" + BuildCss() + "</head><body>";
+            var endPage = "</body></html>\r\n";
+            return startPage + string.Join("", Elements.Select(BuildElement)) + GetHtmfScripts() + endPage;
+        }
+
+        return BuildCss() + string.Join("", Elements.Select(BuildElement));// + RenderScripts();
+    }
+
+    public string GetHtmfScripts()
+    {
+        return "<script src=\"htmf.js\"></script>";
+    }
+
+    private string BuildCss()
+    {
+        return "<style>" + string.Join("", cssClasses.Select(c => c.Value)) + "</style>";
     }
 
     private static string BuildElement(Element2 element)
