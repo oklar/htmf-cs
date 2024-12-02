@@ -59,129 +59,65 @@ namespace HtmfExample.Controllers
         [Route("example")]
         public ActionResult ExamplePage()
         {
-            return Content(new Htmf().Page().Div("Example page").Render(), "text/html");
+            return Content(new Htmf().Page().Div("Example page").Build(), "text/html");
         }
 
         [HttpGet]
         [Route("navigate")]
         public ActionResult NavigateExamplePage()
         {
-            return Content(new Htmf("https://localhost:7031")
+            return Content(new Htmf()
                 .Page()
-                .TailwindStyle()
                 .Div("Click here to navigate to /example")
                 .Navigate("/example")
-                .Css("bg-blue-500 hover:bg-blue-700")
-                .Render(), 
+                .Build(), 
                 "text/html"
             );
         }
 
         [HttpGet]
-        [Route("testing")]
-        public ActionResult GetItems()
+        [Route("")]
+        public ActionResult Home()
         {
-            var b = new Htmf2();
+            var b = new Htmf();
+            string templateItemsId = "template-items-id";
             var result = b
-                .H1(b => b.Css("text-red-400")
-                    .Div(b => b.Css("text-green-400")
-                        .H1("hello").Css("text-blue-500")
-                        .Div("world")
+                .Page("Groceries Shopping")
+                .Div(b => b
+                    .CreateTemplate(Items, b => b
+                        .H1T(item => $"{item.Product.Name}").Css(TextGreen600)
+                        .DivT(item => $"Amount: {item.Quantity} | Total: {item.TotalPrice}").Css(TextBlue500)
+                        .Button("Remove").Css(TextRed600)
+                            .DeleteT(item => $"/api/items/{item.Id}/products")
+                                .TargetSelf()
+                        .Button("Delete").Css(TextRed800)
+                            .DeleteT(item => $"api/items/{item.Id}")
+                                .TargetSelf()
+                        ,
+                        (templateId) => templateItemsId = templateId
                     )
                 )
-                .Div("yes")
-                .Build();
-
-            return Content(
-                result, 
-                "text/html"
-            );
-        }
-
-        [HttpGet]
-        [Route("template")]
-        public ActionResult GetTemplate()
-        {
-            var b = new Htmf2();
-            var result = b
-                //.Page("test")
-                .CreateTemplate(Items, b => b
-                    .Div(b => b
+                .Div(b =>
+                {
+                    b.H1("List of products:");
+                    foreach (Product product in Products)
+                    {
+                        b
                         .Div(b => b
-                            .H1("test312").Css(TextGreen700)
-                        )
-                    )
-                    .DivT(item => $"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}").Css(TextRed400)
-                )
-                .H1("hello, world!!").Css(TextLightBlue700);
+                            .H2($"{product.Name}")
+                            .Div($"Price: {product.Price}").Css(TextGreen500)
+                            .Button("Add to cart")
+                                .Put($"/api/items/products/{product.Id}")
+                                    .Target(templateItemsId)
+                        );
+                    }
+                    return b;
+                });
 
             return Content(
                 result.Build(),
                 "text/html"
             );
-        }
-
-        [HttpGet]
-        public ActionResult Home()
-        {
-            
-            var f = new Htmf("https://localhost:7031")
-
-            .Page("Hello HTMF!")
-            //.TailwindStyle()
-            
-            .Div().Css("flex flex-row justify-center space-x-64 h-full w-full")
-                .Div("A list of products:");
-
-            string myCartTemplateId = "my-cart-template-id";
-            foreach (Product product in Products)
-            {
-                f
-                    .Div()
-                        .H2($"Product: {product.Name}")._H2()
-                        .Div($"Price: {product.Price}").Css("text-green-500")._Div()
-                        .Button("Add to cart").Css("bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded")
-                            .Put($"/api/items/products/{product.Id}")
-                                .Target(myCartTemplateId)
-                        ._Button()
-                    ._Div();
-            }
-
-            f
-                ._Div()
-
-                .Div()
-                    .Div($"My Cart has {Items.Sum(x => x.Quantity)} items")
-                        .Template().Id(myCartTemplateId)
-                            .Div<Item>(item => $"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}").Css("text-blue-500")
-                            ._Div()
-                            .Button("Remove Quantity").Css("bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded")
-                                .Delete<Item>(item => $"/api/items/{item.Id}/products")
-                                    .Target(myCartTemplateId)
-                            ._Button()
-                        ._Template();
-
-            // SSR
-            foreach (Item item in Items)
-            {
-                f
-                        .Div($"Amount: {item.Quantity} | Total: {item.TotalPrice} | Name: {item.Product.Name}").Css("text-blue-500")
-                            .ResourceId(item.Id.ToString())
-                        ._Div()
-                        .Button("Remove Quantity").Css("bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded")
-                            .Delete($"/api/items/{item.Id}/products")
-                                .Target(myCartTemplateId)
-                        ._Button();
-                // hf.FromTemplate(myCartTemplateId);
-            }
-
-            f
-            .CloseAll()
-            
-            .Div().Css("flex justify-center h-64 bg-gray-300")
-                .Div("Home Page");
-
-            return Content(f.Render(), "text/html");
         }
 
         [HttpPut]
