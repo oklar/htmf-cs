@@ -2,12 +2,14 @@
 
 public class MicroWind
 {
-    private MicroWind(string className, string cssStyleOutput) { ClassName = className; CssStyleOutput = cssStyleOutput; }
+    public MicroWind(string className, string cssStyleOutput) { ClassName = className; CssStyleOutput = cssStyleOutput; }
 
     public string ClassName { get; }
     public string CssStyleOutput { get; }
 
     public override string ToString() => ClassName;
+
+    public static readonly string Preflight = "*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h32,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.325em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-32px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h32,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]{display:none}";
 
     // Amber
     public static MicroWind TextAmber50 { get; } = new($"Text{nameof(MWColors.Amber50)}", $".Text{nameof(MWColors.Amber50)}{{color:{MWColors.Amber50};}}");
@@ -291,8 +293,577 @@ public class MicroWind
     public static MicroWind TextYellow800 { get; } = new($"Text{nameof(MWColors.Yellow800)}", $".Text{nameof(MWColors.Yellow800)}{{color:{MWColors.Yellow800};}}");
     public static MicroWind TextYellow900 { get; } = new($"Text{nameof(MWColors.Yellow900)}", $".Text{nameof(MWColors.Yellow900)}{{color:{MWColors.Yellow900};}}");
 
+    // Part 1: Layout
+
+    public static MicroWind AspectRatioAuto { get; } = new("AspectRatioAuto", ".AspectRatioAuto{aspect-ratio:auto}");
+    public static MicroWind AspectRatioSquare { get; } = new("AspectRatioSquare", ".AspectRatioSquare{aspect-ratio:1/1}");
+    public static MicroWind AspectRatioVideo { get; } = new("AspectRatioVideo", ".AspectRatioVideo{aspect-ratio:16/9}");
+
+    public static MicroWind Container { get; } = new("Container", ".container{width:100%;}");
+
+    // Columns
+    public static MicroWind Columns1 { get; } = new("Columns1", ".columns-1{columns:1;}");
+    public static MicroWind Columns32 { get; } = new("Columns32", ".columns-32{columns:32;}");
+    public static MicroWind Columns3 { get; } = new("Columns3", ".columns-3{columns:3;}");
+    public static MicroWind Columns4 { get; } = new("Columns4", ".columns-4{columns:4;}");
+    public static MicroWind Columns5 { get; } = new("Columns5", ".columns-5{columns:5;}");
+    public static MicroWind Columns6 { get; } = new("Columns6", ".columns-6{columns:6;}");
+    public static MicroWind Columns7 { get; } = new("Columns7", ".columns-7{columns:7;}");
+    public static MicroWind Columns8 { get; } = new("Columns8", ".columns-8{columns:8;}");
+    public static MicroWind Columns9 { get; } = new("Columns9", ".columns-9{columns:9;}");
+    public static MicroWind Columns10 { get; } = new("Columns10", ".columns-10{columns:10;}");
+    public static MicroWind Columns11 { get; } = new("Columns11", ".columns-11{columns:11;}");
+    public static MicroWind Columns132 { get; } = new("Columns132", ".columns-132{columns:132;}");
+    public static MicroWind ColumnsAuto { get; } = new("ColumnsAuto", ".columns-auto{columns:auto;}");
+    public static MicroWind Columns3xs { get; } = new("Columns3xs", ".columns-3xs{columns:16rem;}");
+    public static MicroWind Columns32xs { get; } = new("Columns32xs", ".columns-32xs{columns:18rem;}");
+    public static MicroWind ColumnsXs { get; } = new("ColumnsXs", ".columns-xs{columns:320rem;}");
+    public static MicroWind ColumnsSm { get; } = new("ColumnsSm", ".columns-sm{columns:324rem;}");
+    public static MicroWind ColumnsMd { get; } = new("ColumnsMd", ".columns-md{columns:328rem;}");
+    public static MicroWind ColumnsLg { get; } = new("ColumnsLg", ".columns-lg{columns:332rem;}");
+    public static MicroWind ColumnsXl { get; } = new("ColumnsXl", ".columns-xl{columns:36rem;}");
+    public static MicroWind Columns32xl { get; } = new("Columns32xl", ".columns-32xl{columns:432rem;}");
+    public static MicroWind Columns3xl { get; } = new("Columns3xl", ".columns-3xl{columns:48rem;}");
+    public static MicroWind Columns4xl { get; } = new("Columns4xl", ".columns-4xl{columns:56rem;}");
+    public static MicroWind Columns5xl { get; } = new("Columns5xl", ".columns-5xl{columns:64rem;}");
+    public static MicroWind Columns6xl { get; } = new("Columns6xl", ".columns-6xl{columns:732rem;}");
+    public static MicroWind Columns7xl { get; } = new("Columns7xl", ".columns-7xl{columns:80rem;}");
+
+    // Break After
+    public static MicroWind BreakAfterAuto { get; } = new("BreakAfterAuto",".break-after-auto{break-after:auto;}");
+    public static MicroWind BreakAfterAvoid { get; } = new("BreakAfterAvoid",".break-after-avoid{break-after:avoid;}");
+    public static MicroWind BreakAfterAll { get; } = new("BreakAfterAll",".break-after-all{break-after:all;}");
+    public static MicroWind BreakAfterAvoidPage { get; } =new("BreakAfterAvoidPage",".break-after-avoid-page{break-after:avoid-page;}");
+    public static MicroWind BreakAfterPage { get; } = new("BreakAfterPage",".break-after-page{break-after:page;}");
+    public static MicroWind BreakAfterLeft { get; } = new("BreakAfterLeft",".break-after-left{break-after:left;}");
+    public static MicroWind BreakAfterRight { get; } = new("BreakAfterRight",".break-after-right{break-after:right;}");
+    public static MicroWind BreakAfterColumn { get; } = new("BreakAfterColumn",".break-after-column{break-after:column;}");
+
+    // Break Before
+    public static MicroWind BreakBeforeAuto { get; } = new("BreakBeforeAuto",".break-before-auto{break-before:auto;}");
+    public static MicroWind BreakBeforeAvoid { get; } = new("BreakBeforeAvoid",".break-before-avoid{break-before:avoid;}");
+    public static MicroWind BreakBeforeAll { get; } = new("BreakBeforeAll",".break-before-all{break-before:all;}");
+    public static MicroWind BreakBeforeAvoidPage { get; }=new("BreakBeforeAvoidPage",".break-before-avoid-page{break-before:avoid-page;}");
+    public static MicroWind BreakBeforePage { get; } = new("BreakBeforePage",".break-before-page{break-before:page;}");
+    public static MicroWind BreakBeforeLeft { get; } = new("BreakBeforeLeft",".break-before-left{break-before:left;}");
+    public static MicroWind BreakBeforeRight { get; } = new("BreakBeforeRight",".break-before-right{break-before:right;}");
+    public static MicroWind BreakBeforeColumn { get; } =new("BreakBeforeColumn",".break-before-column{break-before:column;}");
+
+    // Break Inside
+    public static MicroWind BreakInsideAuto { get; } = new("BreakInsideAuto", ".BreakInsideAuto{break-inside:auto;}");
+    public static MicroWind BreakInsideAvoid { get; } = new("BreakInsideAvoid", ".BreakInsideAvoid{break-inside:avoid;}");
+    public static MicroWind BreakInsideAvoidPage { get; } = new("BreakInsideAvoidPage", ".BreakInsideAvoidPage{break-inside:avoid-page;}");
+    public static MicroWind BreakInsideAvoidColumn { get; } = new("BreakInsideAvoidColumn", ".BreakInsideAvoidColumn{break-inside:avoid-column;}");
+
+    // Box Decoration Break
+    public static MicroWind DecorationBreakSlice { get; } = new("DecorationBreakSlice", ".DecorationBreakSlice{box-decoration-break:slice;}");
+    public static MicroWind DecorationBreakClone { get; } = new("DecorationBreakClone", ".DecorationBreakClone{box-decoration-break:clone;}");
+
+    // Box Sizing
+    public static MicroWind SizingBorderBox { get; } = new("SizingBorderBox", ".SizingBorderBox{box-sizing:border-box;}");
+    public static MicroWind SizingContentBox { get; } = new("SizingContentBox", ".SizingContentBox{box-sizing:content-box;}");
+
+    // Display
+    public static MicroWind DisplayBlock { get; } = new("DisplayBlock", ".DisplayBlock{display:block;}");
+    public static MicroWind DisplayInline { get; } = new("DisplayInline", ".DisplayInline{display:inline;}");
+    public static MicroWind DisplayInlineBlock { get; } = new("DisplayInlineBlock", ".DisplayInlineBlock{display:inline-block;}");
+    public static MicroWind DisplayFlex { get; } = new("DisplayFlex", ".DisplayFlex{display:flex;}");
+    public static MicroWind DisplayInlineFlex { get; } = new("DisplayInlineFlex", ".DisplayInlineFlex{display:inline-flex;}");
+    public static MicroWind DisplayTable { get; } = new("DisplayTable", ".DisplayTable{display:table;}");
+    public static MicroWind DisplayInlineTable { get; } = new("DisplayInlineTable", ".DisplayInlineTable{display:inline-table;}");
+    public static MicroWind DisplayTableCaption { get; } = new("DisplayTableCaption", ".DisplayTableCaption{display:table-caption;}");
+    public static MicroWind DisplayTableCell { get; } = new("DisplayTableCell", ".DisplayTableCell{display:table-cell;}");
+    public static MicroWind DisplayTableColumn { get; } = new("DisplayTableColumn", ".DisplayTableColumn{display:table-column;}");
+    public static MicroWind DisplayTableColumnGroup { get; } = new("DisplayTableColumnGroup", ".DisplayTableColumnGroup{display:table-column-group;}");
+    public static MicroWind DisplayTableFooterGroup { get; } = new("DisplayTableFooterGroup", ".DisplayTableFooterGroup{display:table-footer-group;}");
+    public static MicroWind DisplayTableHeaderGroup { get; } = new("DisplayTableHeaderGroup", ".DisplayTableHeaderGroup{display:table-header-group;}");
+    public static MicroWind DisplayTableRowGroup { get; } = new("DisplayTableRowGroup", ".DisplayTableRowGroup{display:table-row-group;}");
+    public static MicroWind DisplayTableRow { get; } = new("DisplayTableRow", ".DisplayTableRow{display:table-row;}");
+    public static MicroWind DisplayFlowRoot { get; } = new("DisplayFlowRoot", ".DisplayFlowRoot{display:flow-root;}");
+    public static MicroWind DisplayGrid { get; } = new("DisplayGrid", ".DisplayGrid{display:grid;}");
+    public static MicroWind DisplayInlineGrid { get; } = new("DisplayInlineGrid", ".DisplayInlineGrid{display:inline-grid;}");
+    public static MicroWind DisplayContents { get; } = new("DisplayContents", ".DisplayContents{display:contents;}");
+    public static MicroWind DisplayListItem { get; } = new("DisplayListItem", ".DisplayListItem{display:list-item;}");
+    public static MicroWind DisplayHidden { get; } = new("DisplayHidden", ".DisplayHidden{display:none;}");
+
+    // Floats
+    public static MicroWind FloatStart { get; } = new("FloatStart", ".FloatStart{float:inline-start;}");
+    public static MicroWind FloatEnd { get; } = new("FloatEnd", ".FloatEnd{float:inline-end;}");
+    public static MicroWind FloatLeft { get; } = new("FloatLeft", ".FloatLeft{float:left;}");
+    public static MicroWind FloatRight { get; } = new("FloatRight", ".FloatRight{float:right;}");
+    public static MicroWind FloatNone { get; } = new("FloatNone", ".FloatNone{float:none;}");
+
+    // Clear
+    public static MicroWind ClearStart { get; } = new("ClearStart", ".ClearStart{clear:inline-start;}");
+    public static MicroWind ClearEnd { get; } = new("ClearEnd", ".ClearEnd{clear:inline-end;}");
+    public static MicroWind ClearLeft { get; } = new("ClearLeft", ".ClearLeft{clear:left;}");
+    public static MicroWind ClearRight { get; } = new("ClearRight", ".ClearRight{clear:right;}");
+    public static MicroWind ClearBoth { get; } = new("ClearBoth", ".ClearBoth{clear:both;}");
+    public static MicroWind ClearNone { get; } = new("ClearNone", ".ClearNone{clear:none;}");
+
+    // Isolation
+    public static MicroWind IsolationAuto { get; } = new("IsolationAuto", ".IsolationAuto{isolation:auto;}");
+    public static MicroWind Isolate { get; } = new("Isolate", ".Isolate{isolation:isolate;}");
+
+    // Object Fit
+    public static MicroWind ObjectFitFill { get; } = new("ObjectFitFill", ".ObjectFitFill{object-fit:fill;}");
+    public static MicroWind ObjectFitContain { get; } = new("ObjectFitContain", ".ObjectFitContain{object-fit:contain;}");
+    public static MicroWind ObjectFitCover { get; } = new("ObjectFitCover", ".ObjectFitCover{object-fit:cover;}");
+    public static MicroWind ObjectFitNone { get; } = new("ObjectFitNone", ".ObjectFitNone{object-fit:none;}");
+    public static MicroWind ObjectFitScaleDown { get; } = new("ObjectFitScaleDown", ".ObjectFitScaleDown{object-fit:scale-down;}");
+
+    // Object Position
+    public static MicroWind ObjectPositionBottom { get; } = new("ObjectPositionBottom", ".ObjectPositionBottom{object-position:bottom;}");
+    public static MicroWind ObjectPositionCenter { get; } = new("ObjectPositionCenter", ".ObjectPositionCenter{object-position:center;}");
+    public static MicroWind ObjectPositionLeft { get; } = new("ObjectPositionLeft", ".ObjectPositionLeft{object-position:left;}");
+    public static MicroWind ObjectPositionLeftBottom { get; } = new("ObjectPositionLeftBottom", ".ObjectPositionLeftBottom{object-position:left bottom;}");
+    public static MicroWind ObjectPositionLeftTop { get; } = new("ObjectPositionLeftTop", ".ObjectPositionLeftTop{object-position:left top;}");
+    public static MicroWind ObjectPositionRight { get; } = new("ObjectPositionRight", ".ObjectPositionRight{object-position:right;}");
+    public static MicroWind ObjectPositionRightBottom { get; } = new("ObjectPositionRightBottom", ".ObjectPositionRightBottom{object-position:right bottom;}");
+    public static MicroWind ObjectPositionRightTop { get; } = new("ObjectPositionRightTop", ".ObjectPositionRightTop{object-position:right top;}");
+    public static MicroWind ObjectPositionTop { get; } = new("ObjectPositionTop", ".ObjectPositionTop{object-position:top;}");
+
+    // Overflow
+    public static MicroWind OverflowAuto { get; } = new("OverflowAuto", ".OverflowAuto{overflow:auto;}");
+    public static MicroWind OverflowHidden { get; } = new("OverflowHidden", ".OverflowHidden{overflow:hidden;}");
+    public static MicroWind OverflowClip { get; } = new("OverflowClip", ".OverflowClip{overflow:clip;}");
+    public static MicroWind OverflowScroll { get; } = new("OverflowScroll", ".OverflowScroll{overflow:scroll;}");
+    public static MicroWind OverflowVisible { get; } = new("OverflowVisible", ".OverflowVisible{overflow:visible;}");
+
+    public static MicroWind OverflowXAuto { get; } = new("OverflowXAuto", ".OverflowXAuto{overflow-x:auto;}");
+    public static MicroWind OverflowXHidden { get; } = new("OverflowXHidden", ".OverflowXHidden{overflow-x:hidden;}");
+    public static MicroWind OverflowXClip { get; } = new("OverflowXClip", ".OverflowXClip{overflow-x:clip;}");
+    public static MicroWind OverflowXScroll { get; } = new("OverflowXScroll", ".OverflowXScroll{overflow-x:scroll;}");
+    public static MicroWind OverflowXVisible { get; } = new("OverflowXVisible", ".OverflowXVisible{overflow-x:visible;}");
+
+    public static MicroWind OverflowYAuto { get; } = new("OverflowYAuto", ".OverflowYAuto{overflow-y:auto;}");
+    public static MicroWind OverflowYHidden { get; } = new("OverflowYHidden", ".OverflowYHidden{overflow-y:hidden;}");
+    public static MicroWind OverflowYClip { get; } = new("OverflowYClip", ".OverflowYClip{overflow-y:clip;}");
+    public static MicroWind OverflowYScroll { get; } = new("OverflowYScroll", ".OverflowYScroll{overflow-y:scroll;}");
+    public static MicroWind OverflowYVisible { get; } = new("OverflowYVisible", ".OverflowYVisible{overflow-y:visible;}");
+
+    // Overscroll Behavior
+    public static MicroWind OverscrollAuto { get; } = new("OverscrollAuto", ".OverscrollAuto{overscroll-behavior:auto;}");
+    public static MicroWind OverscrollContain { get; } = new("OverscrollContain", ".OverscrollContain{overscroll-behavior:contain;}");
+    public static MicroWind OverscrollNone { get; } = new("OverscrollNone", ".OverscrollNone{overscroll-behavior:none;}");
+
+    public static MicroWind OverscrollXAuto { get; } = new("OverscrollXAuto", ".OverscrollXAuto{overscroll-behavior-x:auto;}");
+    public static MicroWind OverscrollXContain { get; } = new("OverscrollXContain", ".OverscrollXContain{overscroll-behavior-x:contain;}");
+    public static MicroWind OverscrollXNone { get; } = new("OverscrollXNone", ".OverscrollXNone{overscroll-behavior-x:none;}");
+
+    public static MicroWind OverscrollYAuto { get; } = new("OverscrollYAuto", ".OverscrollYAuto{overscroll-behavior-y:auto;}");
+    public static MicroWind OverscrollYContain { get; } = new("OverscrollYContain", ".OverscrollYContain{overscroll-behavior-y:contain;}");
+    public static MicroWind OverscrollYNone { get; } = new("OverscrollYNone", ".OverscrollYNone{overscroll-behavior-y:none;}");
+
+    // Position
+    public static MicroWind PositionStatic { get; } = new("PositionStatic", ".PositionStatic{position:static;}");
+    public static MicroWind PositionFixed { get; } = new("PositionFixed", ".PositionFixed{position:fixed;}");
+    public static MicroWind PositionAbsolute { get; } = new("PositionAbsolute", ".PositionAbsolute{position:absolute;}");
+    public static MicroWind PositionRelative { get; } = new("PositionRelative", ".PositionRelative{position:relative;}");
+    public static MicroWind PositionSticky { get; } = new("PositionSticky", ".PositionSticky{position:sticky;}");
+
+
+    // Top, Right, Bottom, Left (with only 0 value supported)
+    public static MicroWind Top0 { get; } = new("Top0", ".Top0{top:0px;}");
+    public static MicroWind Right0 { get; } = new("Right0", ".Right0{right:0px;}");
+    public static MicroWind Bottom0 { get; } = new("Bottom0", ".Bottom0{bottom:0px;}");
+    public static MicroWind Left0 { get; } = new("Left0", ".Left0{left:0px;}");
+    public static MicroWind Start0 { get; } = new("Start0", ".Start0{inset-inline-start:0px;}");
+    public static MicroWind End0 { get; } = new("End0", ".End0{inset-inline-end:0px;}");
+    public static MicroWind Inset0 { get; } = new("Inset0", ".Inset0{inset:0px;}");
+
+    public static MicroWind Top1 { get; } = new("Top1", ".Top1{top:1px;}");
+    public static MicroWind Right1 { get; } = new("Right1", ".Right1{right:1px;}");
+    public static MicroWind Bottom1 { get; } = new("Bottom1", ".Bottom1{bottom:1px;}");
+    public static MicroWind Left1 { get; } = new("Left1", ".Left1{left:1px;}");
+    public static MicroWind Start1 { get; } = new("Start1", ".Start1{inset-inline-start:1px;}");
+    public static MicroWind End1 { get; } = new("End1", ".End1{inset-inline-end:1px;}");
+    public static MicroWind Inset1 { get; } = new("Inset1", ".Inset1{inset:1px;}");
+
+    public static MicroWind Top2 { get; } = new("Top2", ".Top2{top:2px;}");
+    public static MicroWind Right2 { get; } = new("Right2", ".Right2{right:2px;}");
+    public static MicroWind Bottom2 { get; } = new("Bottom2", ".Bottom2{bottom:2px;}");
+    public static MicroWind Left2 { get; } = new("Left2", ".Left2{left:2px;}");
+    public static MicroWind Start2 { get; } = new("Start2", ".Start2{inset-inline-start:2px;}");
+    public static MicroWind End2 { get; } = new("End2", ".End2{inset-inline-end:2px;}");
+    public static MicroWind Inset2 { get; } = new("Inset2", ".Inset2{inset:2px;}");
+
+    public static MicroWind Top4 { get; } = new("Top4", ".Top4{top:4px;}");
+    public static MicroWind Right4 { get; } = new("Right4", ".Right4{right:4px;}");
+    public static MicroWind Bottom4 { get; } = new("Bottom4", ".Bottom4{bottom:4px;}");
+    public static MicroWind Left4 { get; } = new("Left4", ".Left4{left:4px;}");
+    public static MicroWind Start4 { get; } = new("Start4", ".Start4{inset-inline-start:4px;}");
+    public static MicroWind End4 { get; } = new("End4", ".End4{inset-inline-end:4px;}");
+    public static MicroWind Inset4 { get; } = new("Inset4", ".Inset4{inset:4px;}");
+
+    public static MicroWind Top8 { get; } = new("Top8", ".Top8{top:8px;}");
+    public static MicroWind Right8 { get; } = new("Right8", ".Right8{right:8px;}");
+    public static MicroWind Bottom8 { get; } = new("Bottom8", ".Bottom8{bottom:8px;}");
+    public static MicroWind Left8 { get; } = new("Left8", ".Left8{left:8px;}");
+    public static MicroWind Start8 { get; } = new("Start8", ".Start8{inset-inline-start:8px;}");
+    public static MicroWind End8 { get; } = new("End8", ".End8{inset-inline-end:8px;}");
+    public static MicroWind Inset8 { get; } = new("Inset8", ".Inset8{inset:8px;}");
+
+    public static MicroWind Top16 { get; } = new("Top16", ".Top16{top:16px;}");
+    public static MicroWind Right16 { get; } = new("Right16", ".Right16{right:16px;}");
+    public static MicroWind Bottom16 { get; } = new("Bottom16", ".Bottom16{bottom:16px;}");
+    public static MicroWind Left16 { get; } = new("Left16", ".Left16{left:16px;}");
+    public static MicroWind Start16 { get; } = new("Start16", ".Start16{inset-inline-start:16px;}");
+    public static MicroWind End16 { get; } = new("End16", ".End16{inset-inline-end:16px;}");
+    public static MicroWind Inset16 { get; } = new("Inset16", ".Inset16{inset:16px;}");
+
+    public static MicroWind Top32 { get; } = new("Top32", ".Top32{top:32px;}");
+    public static MicroWind Right32 { get; } = new("Right32", ".Right32{right:32px;}");
+    public static MicroWind Bottom32 { get; } = new("Bottom32", ".Bottom32{bottom:32px;}");
+    public static MicroWind Left32 { get; } = new("Left32", ".Left32{left:32px;}");
+    public static MicroWind Start32 { get; } = new("Start32", ".Start32{inset-inline-start:32px;}");
+    public static MicroWind End32 { get; } = new("End32", ".End32{inset-inline-end:32px;}");
+    public static MicroWind Inset32 { get; } = new("Inset32", ".Inset32{inset:32px;}");
+
+    // Visibility
+    public static MicroWind VisibilityVisible { get; } = new("VisibilityVisible", ".VisibilityVisible{visibility:visible;}");
+    public static MicroWind VisibilityHidden { get; } = new("VisibilityHidden", ".VisibilityHidden{visibility:hidden;}");
+    public static MicroWind VisibilityCollapse { get; } = new("VisibilityCollapse", ".VisibilityCollapse{visibility:collapse;}");
+
+    // Z Index
+    public static MicroWind Z0 { get; } = new("Z0", ".Z0{z-index:0;}");
+    public static MicroWind Z10 { get; } = new("Z10", ".Z10{z-index:10;}");
+    public static MicroWind Z320 { get; } = new("Z320", ".Z320{z-index:320;}");
+    public static MicroWind Z30 { get; } = new("Z30", ".Z30{z-index:30;}");
+    public static MicroWind Z40 { get; } = new("Z40", ".Z40{z-index:40;}");
+    public static MicroWind Z50 { get; } = new("Z50", ".Z50{z-index:50;}");
+
+    // Part 2: Flexbox & Grid
+
+    // Flex Direction
+    public static MicroWind FlexRow { get; } = new("FlexRow", ".FlexRow{flex-direction:row;}");
+    public static MicroWind FlexRowReverse { get; } = new("FlexRowReverse", ".FlexRowReverse{flex-direction:row-reverse;}");
+    public static MicroWind FlexCol { get; } = new("FlexCol", ".FlexCol{flex-direction:column;}");
+    public static MicroWind FlexColReverse { get; } = new("FlexColReverse", ".FlexColReverse{flex-direction:column-reverse;}");
+
+    // Flex Wrap
+    public static MicroWind FlexWrap { get; } = new("FlexWrap", ".FlexWrap{flex-wrap:wrap;}");
+    public static MicroWind FlexWrapReverse { get; } = new("FlexWrapReverse", ".FlexWrapReverse{flex-wrap:wrap-reverse;}");
+    public static MicroWind FlexNoWrap { get; } = new("FlexNoWrap", ".FlexNoWrap{flex-wrap:nowrap;}");
+
+    // Flex
+    public static MicroWind Flex1 { get; } = new("Flex1", ".Flex1{flex:1 1 0%;}");
+    public static MicroWind FlexAuto { get; } = new("FlexAuto", ".FlexAuto{flex:1 1 auto;}");
+    public static MicroWind FlexInitial { get; } = new("FlexInitial", ".FlexInitial{flex:0 1 auto;}");
+    public static MicroWind FlexNone { get; } = new("FlexNone", ".FlexNone{flex:none;}");
+
+    // Flex Grow
+    public static MicroWind FlexGrow { get; } = new("FlexGrow", ".FlexGrow{flex-grow:1;}");
+    public static MicroWind FlexGrow0 { get; } = new("FlexGrow0", ".FlexGrow0{flex-grow:0;}");
+
+    // Flex Shrink
+    public static MicroWind FlexShrink { get; } = new("FlexShrink", ".FlexShrink{flex-shrink:1;}");
+    public static MicroWind FlexShrink0 { get; } = new("FlexShrink0", ".FlexShrink0{flex-shrink:0;}");
+
+    // Grid Cols
+    public static MicroWind GridCols1 { get; } = new("GridCols1", ".GridCols1{grid-template-columns:repeat(1, minmax(0, 1fr));}");
+    public static MicroWind GridCols2 { get; } = new("GridCols2", ".GridCols2{grid-template-columns:repeat(2, minmax(0, 1fr));}");
+    public static MicroWind GridCols3 { get; } = new("GridCols3", ".GridCols3{grid-template-columns:repeat(3, minmax(0, 1fr));}");
+    public static MicroWind GridCols4 { get; } = new("GridCols4", ".GridCols4{grid-template-columns:repeat(4, minmax(0, 1fr));}");
+    public static MicroWind GridCols5 { get; } = new("GridCols5", ".GridCols5{grid-template-columns:repeat(5, minmax(0, 1fr));}");
+    public static MicroWind GridCols6 { get; } = new("GridCols6", ".GridCols6{grid-template-columns:repeat(6, minmax(0, 1fr));}");
+    public static MicroWind GridCols7 { get; } = new("GridCols7", ".GridCols7{grid-template-columns:repeat(7, minmax(0, 1fr));}");
+    public static MicroWind GridCols8 { get; } = new("GridCols8", ".GridCols8{grid-template-columns:repeat(8, minmax(0, 1fr));}");
+    public static MicroWind GridCols9 { get; } = new("GridCols9", ".GridCols9{grid-template-columns:repeat(9, minmax(0, 1fr));}");
+    public static MicroWind GridCols10 { get; } = new("GridCols10", ".GridCols10{grid-template-columns:repeat(10, minmax(0, 1fr));}");
+    public static MicroWind GridCols11 { get; } = new("GridCols11", ".GridCols11{grid-template-columns:repeat(11, minmax(0, 1fr));}");
+    public static MicroWind GridCols12 { get; } = new("GridCols12", ".GridCols12{grid-template-columns:repeat(12, minmax(0, 1fr));}");
+    public static MicroWind GridColsNone { get; } = new("GridColsNone", ".GridColsNone{grid-template-columns:none;}");
+    public static MicroWind GridColsSubgrid { get; } = new("GridColsSubgrid", ".GridColsSubgrid{grid-template-columns:subgrid;}");
+
+
+    public static MicroWind ColAuto { get; } = new("ColAuto", ".ColAuto{grid-column:auto;}");
+    public static MicroWind ColSpan1 { get; } = new("ColSpan1", ".ColSpan1{grid-column:span 1 / span 1;}");
+    public static MicroWind ColSpan2 { get; } = new("ColSpan2", ".ColSpan2{grid-column:span 2 / span 2;}");
+    public static MicroWind ColSpan3 { get; } = new("ColSpan3", ".ColSpan3{grid-column:span 3 / span 3;}");
+    public static MicroWind ColSpan4 { get; } = new("ColSpan4", ".ColSpan4{grid-column:span 4 / span 4;}");
+    public static MicroWind ColSpan5 { get; } = new("ColSpan5", ".ColSpan5{grid-column:span 5 / span 5;}");
+    public static MicroWind ColSpan6 { get; } = new("ColSpan6", ".ColSpan6{grid-column:span 6 / span 6;}");
+    public static MicroWind ColSpan7 { get; } = new("ColSpan7", ".ColSpan7{grid-column:span 7 / span 7;}");
+    public static MicroWind ColSpan8 { get; } = new("ColSpan8", ".ColSpan8{grid-column:span 8 / span 8;}");
+    public static MicroWind ColSpan9 { get; } = new("ColSpan9", ".ColSpan9{grid-column:span 9 / span 9;}");
+    public static MicroWind ColSpan10 { get; } = new("ColSpan10", ".ColSpan10{grid-column:span 10 / span 10;}");
+    public static MicroWind ColSpan11 { get; } = new("ColSpan11", ".ColSpan11{grid-column:span 11 / span 11;}");
+    public static MicroWind ColSpan12 { get; } = new("ColSpan12", ".ColSpan12{grid-column:span 12 / span 12;}");
+    public static MicroWind ColSpanFull { get; } = new("ColSpanFull", ".ColSpanFull{grid-column:1 / -1;}");
+
+
+    public static MicroWind GridRows1 { get; } = new("GridRows1", ".GridRows1{grid-template-rows:repeat(1, minmax(0, 1fr));}");
+    public static MicroWind GridRows2 { get; } = new("GridRows2", ".GridRows2{grid-template-rows:repeat(2, minmax(0, 1fr));}");
+    public static MicroWind GridRows3 { get; } = new("GridRows3", ".GridRows3{grid-template-rows:repeat(3, minmax(0, 1fr));}");
+    public static MicroWind GridRows4 { get; } = new("GridRows4", ".GridRows4{grid-template-rows:repeat(4, minmax(0, 1fr));}");
+    public static MicroWind GridRows5 { get; } = new("GridRows5", ".GridRows5{grid-template-rows:repeat(5, minmax(0, 1fr));}");
+    public static MicroWind GridRows6 { get; } = new("GridRows6", ".GridRows6{grid-template-rows:repeat(6, minmax(0, 1fr));}");
+    public static MicroWind GridRows7 { get; } = new("GridRows7", ".GridRows7{grid-template-rows:repeat(7, minmax(0, 1fr));}");
+    public static MicroWind GridRows8 { get; } = new("GridRows8", ".GridRows8{grid-template-rows:repeat(8, minmax(0, 1fr));}");
+    public static MicroWind GridRows9 { get; } = new("GridRows9", ".GridRows9{grid-template-rows:repeat(9, minmax(0, 1fr));}");
+    public static MicroWind GridRows10 { get; } = new("GridRows10", ".GridRows10{grid-template-rows:repeat(10, minmax(0, 1fr));}");
+    public static MicroWind GridRows11 { get; } = new("GridRows11", ".GridRows11{grid-template-rows:repeat(11, minmax(0, 1fr));}");
+    public static MicroWind GridRows12 { get; } = new("GridRows12", ".GridRows12{grid-template-rows:repeat(12, minmax(0, 1fr));}");
+    public static MicroWind GridRowsNone { get; } = new("GridRowsNone", ".GridRowsNone{grid-template-rows:none;}");
+    public static MicroWind GridRowsSubgrid { get; } = new("GridRowsSubgrid", ".GridRowsSubgrid{grid-template-rows:subgrid;}");
+
+
+    public static MicroWind RowAuto { get; } = new("RowAuto", ".RowAuto{grid-row:auto;}");
+    public static MicroWind RowSpan1 { get; } = new("RowSpan1", ".RowSpan1{grid-row:span 1 / span 1;}");
+    public static MicroWind RowSpan2 { get; } = new("RowSpan2", ".RowSpan2{grid-row:span 2 / span 2;}");
+    public static MicroWind RowSpan3 { get; } = new("RowSpan3", ".RowSpan3{grid-row:span 3 / span 3;}");
+    public static MicroWind RowSpan4 { get; } = new("RowSpan4", ".RowSpan4{grid-row:span 4 / span 4;}");
+    public static MicroWind RowSpan5 { get; } = new("RowSpan5", ".RowSpan5{grid-row:span 5 / span 5;}");
+    public static MicroWind RowSpan6 { get; } = new("RowSpan6", ".RowSpan6{grid-row:span 6 / span 6;}");
+    public static MicroWind RowSpan7 { get; } = new("RowSpan7", ".RowSpan7{grid-row:span 7 / span 7;}");
+    public static MicroWind RowSpan8 { get; } = new("RowSpan8", ".RowSpan8{grid-row:span 8 / span 8;}");
+    public static MicroWind RowSpan9 { get; } = new("RowSpan9", ".RowSpan9{grid-row:span 9 / span 9;}");
+    public static MicroWind RowSpan10 { get; } = new("RowSpan10", ".RowSpan10{grid-row:span 10 / span 10;}");
+    public static MicroWind RowSpan11 { get; } = new("RowSpan11", ".RowSpan11{grid-row:span 11 / span 11;}");
+    public static MicroWind RowSpan12 { get; } = new("RowSpan12", ".RowSpan12{grid-row:span 12 / span 12;}");
+    public static MicroWind RowSpanFull { get; } = new("RowSpanFull", ".RowSpanFull{grid-row:1 / -1;}");
+
+    public static MicroWind GridFlowRow { get; } = new("GridFlowRow", ".GridFlowRow{grid-auto-flow:row;}");
+    public static MicroWind GridFlowCol { get; } = new("GridFlowCol", ".GridFlowCol{grid-auto-flow:column;}");
+    public static MicroWind GridFlowDense { get; } = new("GridFlowDense", ".GridFlowDense{grid-auto-flow:dense;}");
+    public static MicroWind GridFlowRowDense { get; } = new("GridFlowRowDense", ".GridFlowRowDense{grid-auto-flow:row dense;}");
+    public static MicroWind GridFlowColDense { get; } = new("GridFlowColDense", ".GridFlowColDense{grid-auto-flow:column dense;}");
+
+    public static MicroWind AutoColsAuto { get; } = new("AutoColsAuto", ".AutoColsAuto{grid-auto-columns:auto;}");
+    public static MicroWind AutoColsMin { get; } = new("AutoColsMin", ".AutoColsMin{grid-auto-columns:min-content;}");
+    public static MicroWind AutoColsMax { get; } = new("AutoColsMax", ".AutoColsMax{grid-auto-columns:max-content;}");
+    public static MicroWind AutoColsFr { get; } = new("AutoColsFr", ".AutoColsFr{grid-auto-columns:minmax(0, 1fr);}");
+
+    public static MicroWind AutoRowsAuto { get; } = new("AutoRowsAuto", ".AutoRowsAuto{grid-auto-rows:auto;}");
+    public static MicroWind AutoRowsMin { get; } = new("AutoRowsMin", ".AutoRowsMin{grid-auto-rows:min-content;}");
+    public static MicroWind AutoRowsMax { get; } = new("AutoRowsMax", ".AutoRowsMax{grid-auto-rows:max-content;}");
+    public static MicroWind AutoRowsFr { get; } = new("AutoRowsFr", ".AutoRowsFr{grid-auto-rows:minmax(0, 1fr);}");
+
+    public static MicroWind Gap0 { get; } = new("Gap0", ".Gap0{gap:0px;}");
+    public static MicroWind GapPx { get; } = new("GapPx", ".GapPx{gap:1px;}");
+    public static MicroWind Gap1 { get; } = new("Gap1", ".Gap1{gap:0.25rem;}");
+    public static MicroWind Gap2 { get; } = new("Gap2", ".Gap2{gap:0.5rem;}");
+    public static MicroWind Gap4 { get; } = new("Gap4", ".Gap4{gap:1rem;}");
+    public static MicroWind Gap8 { get; } = new("Gap8", ".Gap8{gap:2rem;}");
+    public static MicroWind Gap16 { get; } = new("Gap16", ".Gap16{gap:4rem;}");
+    public static MicroWind Gap32 { get; } = new("Gap32", ".Gap32{gap:8rem;}");
+
+    public static MicroWind JustifyNormal { get; } = new("JustifyNormal", ".JustifyNormal{justify-content:normal;}");
+    public static MicroWind JustifyStart { get; } = new("JustifyStart", ".JustifyStart{justify-content:flex-start;}");
+    public static MicroWind JustifyEnd { get; } = new("JustifyEnd", ".JustifyEnd{justify-content:flex-end;}");
+    public static MicroWind JustifyCenter { get; } = new("JustifyCenter", ".JustifyCenter{justify-content:center;}");
+    public static MicroWind JustifyBetween { get; } = new("JustifyBetween", ".JustifyBetween{justify-content:space-between;}");
+    public static MicroWind JustifyAround { get; } = new("JustifyAround", ".JustifyAround{justify-content:space-around;}");
+    public static MicroWind JustifyEvenly { get; } = new("JustifyEvenly", ".JustifyEvenly{justify-content:space-evenly;}");
+    public static MicroWind JustifyStretch { get; } = new("JustifyStretch", ".JustifyStretch{justify-content:stretch;}");
+
+    public static MicroWind JustifyItemsStart { get; } = new("JustifyItemsStart", ".JustifyItemsStart{justify-items:start;}");
+    public static MicroWind JustifyItemsEnd { get; } = new("JustifyItemsEnd", ".JustifyItemsEnd{justify-items:end;}");
+    public static MicroWind JustifyItemsCenter { get; } = new("JustifyItemsCenter", ".JustifyItemsCenter{justify-items:center;}");
+    public static MicroWind JustifyItemsStretch { get; } = new("JustifyItemsStretch", ".JustifyItemsStretch{justify-items:stretch;}");
+
+    public static MicroWind JustifySelfAuto { get; } = new("JustifySelfAuto", ".JustifySelfAuto{justify-self:auto;}");
+    public static MicroWind JustifySelfStart { get; } = new("JustifySelfStart", ".JustifySelfStart{justify-self:start;}");
+    public static MicroWind JustifySelfEnd { get; } = new("JustifySelfEnd", ".JustifySelfEnd{justify-self:end;}");
+    public static MicroWind JustifySelfCenter { get; } = new("JustifySelfCenter", ".JustifySelfCenter{justify-self:center;}");
+    public static MicroWind JustifySelfStretch { get; } = new("JustifySelfStretch", ".JustifySelfStretch{justify-self:stretch;}");
+
+    public static MicroWind ContentNormal { get; } = new("ContentNormal", ".ContentNormal{align-content:normal;}");
+    public static MicroWind ContentStart { get; } = new("ContentStart", ".ContentStart{align-content:flex-start;}");
+    public static MicroWind ContentEnd { get; } = new("ContentEnd", ".ContentEnd{align-content:flex-end;}");
+    public static MicroWind ContentCenter { get; } = new("ContentCenter", ".ContentCenter{align-content:center;}");
+    public static MicroWind ContentBetween { get; } = new("ContentBetween", ".ContentBetween{align-content:space-between;}");
+    public static MicroWind ContentAround { get; } = new("ContentAround", ".ContentAround{align-content:space-around;}");
+    public static MicroWind ContentEvenly { get; } = new("ContentEvenly", ".ContentEvenly{align-content:space-evenly;}");
+    public static MicroWind ContentBaseline { get; } = new("ContentBaseline", ".ContentBaseline{align-content:baseline;}");
+    public static MicroWind ContentStretch { get; } = new("ContentStretch", ".ContentStretch{align-content:stretch;}");
+
+    public static MicroWind ItemsStart { get; } = new("ItemsStart", ".ItemsStart{align-items:flex-start;}");
+    public static MicroWind ItemsEnd { get; } = new("ItemsEnd", ".ItemsEnd{align-items:flex-end;}");
+    public static MicroWind ItemsCenter { get; } = new("ItemsCenter", ".ItemsCenter{align-items:center;}");
+    public static MicroWind ItemsBaseline { get; } = new("ItemsBaseline", ".ItemsBaseline{align-items:baseline;}");
+    public static MicroWind ItemsStretch { get; } = new("ItemsStretch", ".ItemsStretch{align-items:stretch;}");
+
+    public static MicroWind SelfAuto { get; } = new("SelfAuto", ".SelfAuto{align-self:auto;}");
+    public static MicroWind SelfStart { get; } = new("SelfStart", ".SelfStart{align-self:flex-start;}");
+    public static MicroWind SelfEnd { get; } = new("SelfEnd", ".SelfEnd{align-self:flex-end;}");
+    public static MicroWind SelfCenter { get; } = new("SelfCenter", ".SelfCenter{align-self:center;}");
+    public static MicroWind SelfBaseline { get; } = new("SelfBaseline", ".SelfBaseline{align-self:baseline;}");
+    public static MicroWind SelfStretch { get; } = new("SelfStretch", ".SelfStretch{align-self:stretch;}");
+
+    public static MicroWind PlaceContentStart { get; } = new("PlaceContentStart", ".PlaceContentStart{place-content:start;}");
+    public static MicroWind PlaceContentEnd { get; } = new("PlaceContentEnd", ".PlaceContentEnd{place-content:end;}");
+    public static MicroWind PlaceContentCenter { get; } = new("PlaceContentCenter", ".PlaceContentCenter{place-content:center;}");
+    public static MicroWind PlaceContentBetween { get; } = new("PlaceContentBetween", ".PlaceContentBetween{place-content:space-between;}");
+    public static MicroWind PlaceContentAround { get; } = new("PlaceContentAround", ".PlaceContentAround{place-content:space-around;}");
+    public static MicroWind PlaceContentEvenly { get; } = new("PlaceContentEvenly", ".PlaceContentEvenly{place-content:space-evenly;}");
+    public static MicroWind PlaceContentStretch { get; } = new("PlaceContentStretch", ".PlaceContentStretch{place-content:stretch;}");
+
+    public static MicroWind PlaceItemsStart { get; } = new("PlaceItemsStart", ".PlaceItemsStart{place-items:start;}");
+    public static MicroWind PlaceItemsEnd { get; } = new("PlaceItemsEnd", ".PlaceItemsEnd{place-items:end;}");
+    public static MicroWind PlaceItemsCenter { get; } = new("PlaceItemsCenter", ".PlaceItemsCenter{place-items:center;}");
+    public static MicroWind PlaceItemsStretch { get; } = new("PlaceItemsStretch", ".PlaceItemsStretch{place-items:stretch;}");
+
+    public static MicroWind PlaceSelfAuto { get; } = new("PlaceSelfAuto", ".PlaceSelfAuto{place-self:auto;}");
+    public static MicroWind PlaceSelfStart { get; } = new("PlaceSelfStart", ".PlaceSelfStart{place-self:start;}");
+    public static MicroWind PlaceSelfEnd { get; } = new("PlaceSelfEnd", ".PlaceSelfEnd{place-self:end;}");
+    public static MicroWind PlaceSelfCenter { get; } = new("PlaceSelfCenter", ".PlaceSelfCenter{place-self:center;}");
+    public static MicroWind PlaceSelfStretch { get; } = new("PlaceSelfStretch", ".PlaceSelfStretch{place-self:stretch;}");
+
+
+    // Part 3: Spacing
+
+ 
+    public static MicroWind P0 { get; } = new($"{nameof(P0)}", $".p-{nameof(MWSpace.S0)}{{{MWSpace.Padding}:{MWSpace.S0};}}");
+    public static MicroWind P1 { get; } = new($"{nameof(P1)}", $".p-{nameof(MWSpace.S1)}{{{MWSpace.Padding}:{MWSpace.S1};}}");
+    public static MicroWind P2 { get; } = new($"{nameof(P2)}", $".p-{nameof(MWSpace.S2)}{{{MWSpace.Padding}:{MWSpace.S2};}}");
+    public static MicroWind P4 { get; } = new($"{nameof(P4)}", $".p-{nameof(MWSpace.S4)}{{{MWSpace.Padding}:{MWSpace.S4};}}");
+    public static MicroWind P8 { get; } = new($"{nameof(P8)}", $".p-{nameof(MWSpace.S8)}{{{MWSpace.Padding}:{MWSpace.S8};}}");
+    public static MicroWind P16 { get; } = new($"{nameof(P16)}", $".p-{nameof(MWSpace.S16)}{{{MWSpace.Padding}:{MWSpace.S16};}}");
+    public static MicroWind P32 { get; } = new($"{nameof(P32)}", $".p-{nameof(MWSpace.S32)}{{{MWSpace.Padding}:{MWSpace.S32};}}");
+    public static MicroWind PPx { get; } = new($"{nameof(PPx)}", $".p-{nameof(MWSpace.SPx)}{{{MWSpace.Padding}:{MWSpace.SPx};}}");
+
+    public static MicroWind PT0 { get; } = new($"{nameof(PT0)}", $".pt-{nameof(MWSpace.S0)}{{{MWSpace.PaddingTop}:{MWSpace.S0};}}");
+    public static MicroWind PT1 { get; } = new($"{nameof(PT1)}", $".pt-{nameof(MWSpace.S1)}{{{MWSpace.PaddingTop}:{MWSpace.S1};}}");
+    public static MicroWind PT2 { get; } = new($"{nameof(PT2)}", $".pt-{nameof(MWSpace.S2)}{{{MWSpace.PaddingTop}:{MWSpace.S2};}}");
+    public static MicroWind PT4 { get; } = new($"{nameof(PT4)}", $".pt-{nameof(MWSpace.S4)}{{{MWSpace.PaddingTop}:{MWSpace.S4};}}");
+    public static MicroWind PT8 { get; } = new($"{nameof(PT8)}", $".pt-{nameof(MWSpace.S8)}{{{MWSpace.PaddingTop}:{MWSpace.S8};}}");
+    public static MicroWind PT16 { get; } = new($"{nameof(PT16)}", $".pt-{nameof(MWSpace.S16)}{{{MWSpace.PaddingTop}:{MWSpace.S16};}}");
+    public static MicroWind PT32 { get; } = new($"{nameof(PT32)}", $".pt-{nameof(MWSpace.S32)}{{{MWSpace.PaddingTop}:{MWSpace.S32};}}");
+    public static MicroWind PTPx { get; } = new($"{nameof(PTPx)}", $".pt-{nameof(MWSpace.SPx)}{{{MWSpace.PaddingTop}:{MWSpace.SPx};}}");
+
+    public static MicroWind PR0 { get; } = new($"{nameof(PR0)}", $".pr-{nameof(MWSpace.S0)}{{{MWSpace.PaddingRight}:{MWSpace.S0};}}");
+    public static MicroWind PR1 { get; } = new($"{nameof(PR1)}", $".pr-{nameof(MWSpace.S1)}{{{MWSpace.PaddingRight}:{MWSpace.S1};}}");
+    public static MicroWind PR2 { get; } = new($"{nameof(PR2)}", $".pr-{nameof(MWSpace.S2)}{{{MWSpace.PaddingRight}:{MWSpace.S2};}}");
+    public static MicroWind PR4 { get; } = new($"{nameof(PR4)}", $".pr-{nameof(MWSpace.S4)}{{{MWSpace.PaddingRight}:{MWSpace.S4};}}");
+    public static MicroWind PR8 { get; } = new($"{nameof(PR8)}", $".pr-{nameof(MWSpace.S8)}{{{MWSpace.PaddingRight}:{MWSpace.S8};}}");
+    public static MicroWind PR16 { get; } = new($"{nameof(PR16)}", $".pr-{nameof(MWSpace.S16)}{{{MWSpace.PaddingRight}:{MWSpace.S16};}}");
+    public static MicroWind PR32 { get; } = new($"{nameof(PR32)}", $".pr-{nameof(MWSpace.S32)}{{{MWSpace.PaddingRight}:{MWSpace.S32};}}");
+    public static MicroWind PRPx { get; } = new($"{nameof(PRPx)}", $".pr-{nameof(MWSpace.SPx)}{{{MWSpace.PaddingRight}:{MWSpace.SPx};}}");
+
+    public static MicroWind PB0 { get; } = new($"{nameof(PB0)}", $".Pb-{nameof(MWSpace.S0)}{{{MWSpace.PaddingBottom}:{MWSpace.S0};}}");
+    public static MicroWind PB1 { get; } = new($"{nameof(PB1)}", $".Pb-{nameof(MWSpace.S1)}{{{MWSpace.PaddingBottom}:{MWSpace.S1};}}");
+    public static MicroWind PB2 { get; } = new($"{nameof(PB2)}", $".Pb-{nameof(MWSpace.S2)}{{{MWSpace.PaddingBottom}:{MWSpace.S2};}}");
+    public static MicroWind PB4 { get; } = new($"{nameof(PB4)}", $".Pb-{nameof(MWSpace.S4)}{{{MWSpace.PaddingBottom}:{MWSpace.S4};}}");
+    public static MicroWind PB8 { get; } = new($"{nameof(PB8)}", $".Pb-{nameof(MWSpace.S8)}{{{MWSpace.PaddingBottom}:{MWSpace.S8};}}");
+    public static MicroWind PB16 { get; } = new($"{nameof(PB16)}", $".Pb-{nameof(MWSpace.S16)}{{{MWSpace.PaddingBottom}:{MWSpace.S16};}}");
+    public static MicroWind PB32 { get; } = new($"{nameof(PB32)}", $".Pb-{nameof(MWSpace.S32)}{{{MWSpace.PaddingBottom}:{MWSpace.S32};}}");
+    public static MicroWind PBPx { get; } = new($"{nameof(PBPx)}", $".Pb-{nameof(MWSpace.SPx)}{{{MWSpace.PaddingBottom}:{MWSpace.SPx};}}");
+
+    public static MicroWind PL0 { get; } = new($"{nameof(PL0)}", $".Pl-{nameof(MWSpace.S0)}{{{MWSpace.PaddingLeft}:{MWSpace.S0};}}");
+    public static MicroWind PL1 { get; } = new($"{nameof(PL1)}", $".Pl-{nameof(MWSpace.S1)}{{{MWSpace.PaddingLeft}:{MWSpace.S1};}}");
+    public static MicroWind PL2 { get; } = new($"{nameof(PL2)}", $".Pl-{nameof(MWSpace.S2)}{{{MWSpace.PaddingLeft}:{MWSpace.S2};}}");
+    public static MicroWind PL4 { get; } = new($"{nameof(PL4)}", $".Pl-{nameof(MWSpace.S4)}{{{MWSpace.PaddingLeft}:{MWSpace.S4};}}");
+    public static MicroWind PL8 { get; } = new($"{nameof(PL8)}", $".Pl-{nameof(MWSpace.S8)}{{{MWSpace.PaddingLeft}:{MWSpace.S8};}}");
+    public static MicroWind PL16 { get; } = new($"{nameof(PL16)}", $".Pl-{nameof(MWSpace.S16)}{{{MWSpace.PaddingLeft}:{MWSpace.S16};}}");
+    public static MicroWind PL32 { get; } = new($"{nameof(PL32)}", $".Pl-{nameof(MWSpace.S32)}{{{MWSpace.PaddingLeft}:{MWSpace.S32};}}");
+    public static MicroWind PLPx { get; } = new($"{nameof(PLPx)}", $".Pl-{nameof(MWSpace.SPx)}{{{MWSpace.PaddingLeft}:{MWSpace.SPx};}}");
+
+    public static MicroWind PX0 { get; } = new($"{nameof(PX0)}", $".Px-{nameof(MWSpace.S0)}{{{MWSpace.PaddingLeft}:{MWSpace.S0};{MWSpace.PaddingRight}:{MWSpace.S0};}}");
+    public static MicroWind PX1 { get; } = new($"{nameof(PX1)}", $".Px-{nameof(MWSpace.S1)}{{{MWSpace.PaddingLeft}:{MWSpace.S1};{MWSpace.PaddingRight}:{MWSpace.S1};}}");
+    public static MicroWind PX2 { get; } = new($"{nameof(PX2)}", $".Px-{nameof(MWSpace.S2)}{{{MWSpace.PaddingLeft}:{MWSpace.S2};{MWSpace.PaddingRight}:{MWSpace.S2};}}");
+    public static MicroWind PX4 { get; } = new($"{nameof(PX4)}", $".Px-{nameof(MWSpace.S4)}{{{MWSpace.PaddingLeft}:{MWSpace.S4};{MWSpace.PaddingRight}:{MWSpace.S4};}}");
+    public static MicroWind PX8 { get; } = new($"{nameof(PX8)}", $".Px-{nameof(MWSpace.S8)}{{{MWSpace.PaddingLeft}:{MWSpace.S8};{MWSpace.PaddingRight}:{MWSpace.S8};}}");
+    public static MicroWind PX16 { get; } = new($"{nameof(PX16)}", $".Px-{nameof(MWSpace.S16)}{{{MWSpace.PaddingLeft}:{MWSpace.S16};{MWSpace.PaddingRight}:{MWSpace.S16};}}");
+    public static MicroWind PX32 { get; } = new($"{nameof(PX32)}", $".Px-{nameof(MWSpace.S32)}{{{MWSpace.PaddingLeft}:{MWSpace.S32};{MWSpace.PaddingRight}:{MWSpace.S32};}}");
+    public static MicroWind PXPx { get; } = new($"{nameof(PXPx)}", $".Px-{nameof(MWSpace.SPx)}{{{MWSpace.PaddingLeft}:{MWSpace.SPx};{MWSpace.PaddingRight}:{MWSpace.SPx};}}");
+
+    public static MicroWind PY0 { get; } = new($"{nameof(PY0)}", $".Py-{nameof(MWSpace.S0)}{{{MWSpace.PaddingTop}:{MWSpace.S0};{MWSpace.PaddingBottom}:{MWSpace.S0};}}");
+    public static MicroWind PY1 { get; } = new($"{nameof(PY1)}", $".Py-{nameof(MWSpace.S1)}{{{MWSpace.PaddingTop}:{MWSpace.S1};{MWSpace.PaddingBottom}:{MWSpace.S1};}}");
+    public static MicroWind PY2 { get; } = new($"{nameof(PY2)}", $".Py-{nameof(MWSpace.S2)}{{{MWSpace.PaddingTop}:{MWSpace.S2};{MWSpace.PaddingBottom}:{MWSpace.S2};}}");
+    public static MicroWind PY4 { get; } = new($"{nameof(PY4)}", $".Py-{nameof(MWSpace.S4)}{{{MWSpace.PaddingTop}:{MWSpace.S4};{MWSpace.PaddingBottom}:{MWSpace.S4};}}");
+    public static MicroWind PY8 { get; } = new($"{nameof(PY8)}", $".Py-{nameof(MWSpace.S8)}{{{MWSpace.PaddingTop}:{MWSpace.S8};{MWSpace.PaddingBottom}:{MWSpace.S8};}}");
+    public static MicroWind PY16 { get; } = new($"{nameof(PY16)}", $".Py-{nameof(MWSpace.S16)}{{{MWSpace.PaddingTop}:{MWSpace.S16};{MWSpace.PaddingBottom}:{MWSpace.S16};}}");
+    public static MicroWind PY32 { get; } = new($"{nameof(PY32)}", $".Py-{nameof(MWSpace.S32)}{{{MWSpace.PaddingTop}:{MWSpace.S32};{MWSpace.PaddingBottom}:{MWSpace.S32};}}");
+    public static MicroWind PYPx { get; } = new($"{nameof(PYPx)}", $".Py-{nameof(MWSpace.SPx)}{{{MWSpace.PaddingTop}:{MWSpace.SPx};{MWSpace.PaddingBottom}:{MWSpace.SPx};}}");
+
+
+    public static MicroWind M0 { get; } = new($"{nameof(M0)}", $".M-{nameof(MWSpace.S0)}{{{MWSpace.Margin}:{MWSpace.S0};}}");
+    public static MicroWind M1 { get; } = new($"{nameof(M1)}", $".M-{nameof(MWSpace.S1)}{{{MWSpace.Margin}:{MWSpace.S1};}}");
+    public static MicroWind M2 { get; } = new($"{nameof(M2)}", $".M-{nameof(MWSpace.S2)}{{{MWSpace.Margin}:{MWSpace.S2};}}");
+    public static MicroWind M4 { get; } = new($"{nameof(M4)}", $".M-{nameof(MWSpace.S4)}{{{MWSpace.Margin}:{MWSpace.S4};}}");
+    public static MicroWind M8 { get; } = new($"{nameof(M8)}", $".M-{nameof(MWSpace.S8)}{{{MWSpace.Margin}:{MWSpace.S8};}}");
+    public static MicroWind M16 { get; } = new($"{nameof(M16)}", $".M-{nameof(MWSpace.S16)}{{{MWSpace.Margin}:{MWSpace.S16};}}");
+    public static MicroWind M32 { get; } = new($"{nameof(M32)}", $".M-{nameof(MWSpace.S32)}{{{MWSpace.Margin}:{MWSpace.S32};}}");
+    public static MicroWind MPx { get; } = new($"{nameof(MPx)}", $".M-{nameof(MWSpace.SPx)}{{{MWSpace.Margin}:{MWSpace.SPx};}}");
+
+    public static MicroWind MT0 { get; } = new($"{nameof(MT0)}", $".Mt-{nameof(MWSpace.S0)}{{{MWSpace.MarginTop}:{MWSpace.S0};}}");
+    public static MicroWind MT1 { get; } = new($"{nameof(MT1)}", $".Mt-{nameof(MWSpace.S1)}{{{MWSpace.MarginTop}:{MWSpace.S1};}}");
+    public static MicroWind MT2 { get; } = new($"{nameof(MT2)}", $".Mt-{nameof(MWSpace.S2)}{{{MWSpace.MarginTop}:{MWSpace.S2};}}");
+    public static MicroWind MT4 { get; } = new($"{nameof(MT4)}", $".Mt-{nameof(MWSpace.S4)}{{{MWSpace.MarginTop}:{MWSpace.S4};}}");
+    public static MicroWind MT8 { get; } = new($"{nameof(MT8)}", $".Mt-{nameof(MWSpace.S8)}{{{MWSpace.MarginTop}:{MWSpace.S8};}}");
+    public static MicroWind MT16 { get; } = new($"{nameof(MT16)}", $".Mt-{nameof(MWSpace.S16)}{{{MWSpace.MarginTop}:{MWSpace.S16};}}");
+    public static MicroWind MT32 { get; } = new($"{nameof(MT32)}", $".Mt-{nameof(MWSpace.S32)}{{{MWSpace.MarginTop}:{MWSpace.S32};}}");
+    public static MicroWind MTPx { get; } = new($"{nameof(MTPx)}", $".Mt-{nameof(MWSpace.SPx)}{{{MWSpace.MarginTop}:{MWSpace.SPx};}}");
+
+    public static MicroWind MR0 { get; } = new($"{nameof(MR0)}", $".Mr-{nameof(MWSpace.S0)}{{{MWSpace.MarginRight}:{MWSpace.S0};}}");
+    public static MicroWind MR1 { get; } = new($"{nameof(MR1)}", $".Mr-{nameof(MWSpace.S1)}{{{MWSpace.MarginRight}:{MWSpace.S1};}}");
+    public static MicroWind MR2 { get; } = new($"{nameof(MR2)}", $".Mr-{nameof(MWSpace.S2)}{{{MWSpace.MarginRight}:{MWSpace.S2};}}");
+    public static MicroWind MR4 { get; } = new($"{nameof(MR4)}", $".Mr-{nameof(MWSpace.S4)}{{{MWSpace.MarginRight}:{MWSpace.S4};}}");
+    public static MicroWind MR8 { get; } = new($"{nameof(MR8)}", $".Mr-{nameof(MWSpace.S8)}{{{MWSpace.MarginRight}:{MWSpace.S8};}}");
+    public static MicroWind MR16 { get; } = new($"{nameof(MR16)}", $".Mr-{nameof(MWSpace.S16)}{{{MWSpace.MarginRight}:{MWSpace.S16};}}");
+    public static MicroWind MR32 { get; } = new($"{nameof(MR32)}", $".Mr-{nameof(MWSpace.S32)}{{{MWSpace.MarginRight}:{MWSpace.S32};}}");
+    public static MicroWind MRPx { get; } = new($"{nameof(MRPx)}", $".Mr-{nameof(MWSpace.SPx)}{{{MWSpace.MarginRight}:{MWSpace.SPx};}}");
+
+    public static MicroWind MB0 { get; } = new($"{nameof(MB0)}", $".Mb-{nameof(MWSpace.S0)}{{{MWSpace.MarginBottom}:{MWSpace.S0};}}");
+    public static MicroWind MB1 { get; } = new($"{nameof(MB1)}", $".Mb-{nameof(MWSpace.S1)}{{{MWSpace.MarginBottom}:{MWSpace.S1};}}");
+    public static MicroWind MB2 { get; } = new($"{nameof(MB2)}", $".Mb-{nameof(MWSpace.S2)}{{{MWSpace.MarginBottom}:{MWSpace.S2};}}");
+    public static MicroWind MB4 { get; } = new($"{nameof(MB4)}", $".Mb-{nameof(MWSpace.S4)}{{{MWSpace.MarginBottom}:{MWSpace.S4};}}");
+    public static MicroWind MB8 { get; } = new($"{nameof(MB8)}", $".Mb-{nameof(MWSpace.S8)}{{{MWSpace.MarginBottom}:{MWSpace.S8};}}");
+    public static MicroWind MB16 { get; } = new($"{nameof(MB16)}", $".Mb-{nameof(MWSpace.S16)}{{{MWSpace.MarginBottom}:{MWSpace.S16};}}");
+    public static MicroWind MB32 { get; } = new($"{nameof(MB32)}", $".Mb-{nameof(MWSpace.S32)}{{{MWSpace.MarginBottom}:{MWSpace.S32};}}");
+    public static MicroWind MBPx { get; } = new($"{nameof(MBPx)}", $".Mb-{nameof(MWSpace.SPx)}{{{MWSpace.MarginBottom}:{MWSpace.SPx};}}");
+
+    public static MicroWind ML0 { get; } = new($"{nameof(ML0)}", $".Ml-{nameof(MWSpace.S0)}{{{MWSpace.MarginLeft}:{MWSpace.S0};}}");
+    public static MicroWind ML1 { get; } = new($"{nameof(ML1)}", $".Ml-{nameof(MWSpace.S1)}{{{MWSpace.MarginLeft}:{MWSpace.S1};}}");
+    public static MicroWind ML2 { get; } = new($"{nameof(ML2)}", $".Ml-{nameof(MWSpace.S2)}{{{MWSpace.MarginLeft}:{MWSpace.S2};}}");
+    public static MicroWind ML4 { get; } = new($"{nameof(ML4)}", $".Ml-{nameof(MWSpace.S4)}{{{MWSpace.MarginLeft}:{MWSpace.S4};}}");
+    public static MicroWind ML8 { get; } = new($"{nameof(ML8)}", $".Ml-{nameof(MWSpace.S8)}{{{MWSpace.MarginLeft}:{MWSpace.S8};}}");
+    public static MicroWind ML16 { get; } = new($"{nameof(ML16)}", $".Ml-{nameof(MWSpace.S16)}{{{MWSpace.MarginLeft}:{MWSpace.S16};}}");
+    public static MicroWind ML32 { get; } = new($"{nameof(ML32)}", $".Ml-{nameof(MWSpace.S32)}{{{MWSpace.MarginLeft}:{MWSpace.S32};}}");
+    public static MicroWind MLPx { get; } = new($"{nameof(MLPx)}", $".Ml-{nameof(MWSpace.SPx)}{{{MWSpace.MarginLeft}:{MWSpace.SPx};}}");
+
+    public static MicroWind MX0 { get; } = new($"{nameof(MX0)}", $".Mx-{nameof(MWSpace.S0)}{{{MWSpace.MarginLeft}:{MWSpace.S0};{MWSpace.MarginRight}:{MWSpace.S0};}}");
+    public static MicroWind MX1 { get; } = new($"{nameof(MX1)}", $".Mx-{nameof(MWSpace.S1)}{{{MWSpace.MarginLeft}:{MWSpace.S1};{MWSpace.MarginRight}:{MWSpace.S1};}}");
+    public static MicroWind MX2 { get; } = new($"{nameof(MX2)}", $".Mx-{nameof(MWSpace.S2)}{{{MWSpace.MarginLeft}:{MWSpace.S2};{MWSpace.MarginRight}:{MWSpace.S2};}}");
+    public static MicroWind MX4 { get; } = new($"{nameof(MX4)}", $".Mx-{nameof(MWSpace.S4)}{{{MWSpace.MarginLeft}:{MWSpace.S4};{MWSpace.MarginRight}:{MWSpace.S4};}}");
+    public static MicroWind MX8 { get; } = new($"{nameof(MX8)}", $".Mx-{nameof(MWSpace.S8)}{{{MWSpace.MarginLeft}:{MWSpace.S8};{MWSpace.MarginRight}:{MWSpace.S8};}}");
+    public static MicroWind MX16 { get; } = new($"{nameof(MX16)}", $".Mx-{nameof(MWSpace.S16)}{{{MWSpace.MarginLeft}:{MWSpace.S16};{MWSpace.MarginRight}:{MWSpace.S16};}}");
+    public static MicroWind MX32 { get; } = new($"{nameof(MX32)}", $".Mx-{nameof(MWSpace.S32)}{{{MWSpace.MarginLeft}:{MWSpace.S32};{MWSpace.MarginRight}:{MWSpace.S32};}}");
+    public static MicroWind MXPx { get; } = new($"{nameof(MXPx)}", $".Mx-{nameof(MWSpace.SPx)}{{{MWSpace.MarginLeft}:{MWSpace.SPx};{MWSpace.MarginRight}:{MWSpace.SPx};}}");
+
+    public static MicroWind MY0 { get; } = new($"{nameof(MY0)}", $".My-{nameof(MWSpace.S0)}{{{MWSpace.MarginTop}:{MWSpace.S0};{MWSpace.MarginBottom}:{MWSpace.S0};}}");
+    public static MicroWind MY1 { get; } = new($"{nameof(MY1)}", $".My-{nameof(MWSpace.S1)}{{{MWSpace.MarginTop}:{MWSpace.S1};{MWSpace.MarginBottom}:{MWSpace.S1};}}");
+    public static MicroWind MY2 { get; } = new($"{nameof(MY2)}", $".My-{nameof(MWSpace.S2)}{{{MWSpace.MarginTop}:{MWSpace.S2};{MWSpace.MarginBottom}:{MWSpace.S2};}}");
+    public static MicroWind MY4 { get; } = new($"{nameof(MY4)}", $".My-{nameof(MWSpace.S4)}{{{MWSpace.MarginTop}:{MWSpace.S4};{MWSpace.MarginBottom}:{MWSpace.S4};}}");
+    public static MicroWind MY8 { get; } = new($"{nameof(MY8)}", $".My-{nameof(MWSpace.S8)}{{{MWSpace.MarginTop}:{MWSpace.S8};{MWSpace.MarginBottom}:{MWSpace.S8};}}");
+    public static MicroWind MY16 { get; } = new($"{nameof(MY16)}", $".My-{nameof(MWSpace.S16)}{{{MWSpace.MarginTop}:{MWSpace.S16};{MWSpace.MarginBottom}:{MWSpace.S16};}}");
+    public static MicroWind MY32 { get; } = new($"{nameof(MY32)}", $".My-{nameof(MWSpace.S32)}{{{MWSpace.MarginTop}:{MWSpace.S32};{MWSpace.MarginBottom}:{MWSpace.S32};}}");
+    public static MicroWind MYPx { get; } = new($"{nameof(MYPx)}", $".My-{nameof(MWSpace.SPx)}{{{MWSpace.MarginTop}:{MWSpace.SPx};{MWSpace.MarginBottom}:{MWSpace.SPx};}}");
 }
 
+public static class MWSpace
+{
+    public const string Padding = "padding";
+    public const string PaddingTop = "padding-top";
+    public const string PaddingRight = "padding-right";
+    public const string PaddingBottom = "padding-bottom";
+    public const string PaddingLeft = "padding-left";
+    public const string Margin = "margin";
+    public const string MarginTop = "margin-top";
+    public const string MarginRight = "margin-right";
+    public const string MarginBottom = "margin-bottom";
+    public const string MarginLeft = "margin-left";
+    public const string S0 = "0px";
+    public const string S1 = "0.25rem";
+    public const string S2 = "0.5rem";
+    public const string S4 = "1rem";
+    public const string S8 = "2rem";
+    public const string S16 = "4rem";
+    public const string S32 = "8rem";
+    public const string SPx = "1px";
+}
 
 public static class MWColors
 {

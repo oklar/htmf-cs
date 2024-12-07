@@ -99,7 +99,8 @@ namespace HtmfExample.Controllers
                 )
                 .Div(b =>
                 {
-                    b.H1("List of products:");
+                    b
+                    .H1("List of products:");
                     foreach (Product product in Products)
                     {
                         b
@@ -124,27 +125,20 @@ namespace HtmfExample.Controllers
         [Route("api/items/products/{productId:guid}")]
         public ActionResult AddToItem(Guid productId)
         {
-            Product? product = Products.FirstOrDefault(p => p.Id == productId);
-
-            if (product is null)
-            {
-                return BadRequest();
-            }
-
             Item? item = Items.FirstOrDefault(x => x.Product.Id == productId);
-            if (item is not null)
-            {
-                item.Quantity++;
-            }
-            else
+            if (item is null)
             {
                 item = new Item
                 {
-                    Product = product,
+                    Product = Products.Single(p => p.Id == productId),
                     Quantity = 1,
                 };
-                
+
                 Items.Add(item);
+            }
+            else
+            {
+                item.Quantity++;
             }
 
             return Ok(item);
@@ -155,17 +149,17 @@ namespace HtmfExample.Controllers
         public ActionResult RemoveOneQuantityFromItem(Guid itemsId)
         {
             Item? currentItem = Items.FirstOrDefault(x => x.Id == itemsId);
-            if (currentItem is not null)
+
+            if (currentItem is null) { return NoContent(); }
+
+            currentItem.Quantity--;
+            if (currentItem.Quantity <= 0)
             {
-                currentItem.Quantity--;
-                if (currentItem.Quantity == 0)
-                {
-                    currentItem = null;
-                    Items = Items.Where(item => item.Id != itemsId).ToList();
-                }
+                Items = Items.Where(item => item.Id != itemsId).ToList();
+                return NoContent();
             }
 
-            return currentItem is null ? NoContent() : Ok(currentItem);
+            return Ok(currentItem);
         }
 
         [HttpDelete]

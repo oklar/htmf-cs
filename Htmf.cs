@@ -578,7 +578,7 @@ public class Htmf
 
     private string BuildCss()
     {
-        return "<style>" + string.Join("", cssClasses.Select(c => c.Value)) + "</style>";
+        return "<style>" + MicroWind.Preflight + " " + string.Join("", cssClasses.Select(c => c.Value)) + "</style>";
     }
 
     private static string BuildElement(Element2 element)
