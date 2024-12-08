@@ -174,13 +174,13 @@ public class HtmfTemplate<T>
         return FromBuilder.Build();
     }
     
-    public HtmfTemplate<T> Css(string cssClass)
+    public HtmfTemplate<T> Class(string cssClass)
     {
-        FromBuilder.Css(cssClass);
+        FromBuilder.Class(cssClass);
         return this;
     }
     
-    public HtmfTemplate<T> Css(params MicroWind[] mwClasses)
+    public HtmfTemplate<T> Css(params string[] mwClasses)
     {
         FromBuilder.Css(mwClasses);
         return this;
@@ -449,7 +449,7 @@ public class Htmf
         return this;
     }
 
-    public Htmf Css(string cssClass)
+    public Htmf Class(string cssClass)
     {
         if (elementStack.Count != 0)
         {
@@ -458,16 +458,19 @@ public class Htmf
         return this;
     }
 
-    public Htmf Css(params MicroWind[] mwClasses)
+    public Htmf Css(params string[] mwClasses)
     {
-        foreach (var cssClass in mwClasses)
+        List<string> classes = [];
+        foreach (string cssClass in mwClasses)
         {
-            cssClasses[cssClass.ClassName] = cssClass.CssStyleOutput;
+            string className = cssClass.Split("{").First().Replace(".", "");
+            cssClasses[className] = cssClass;
+            classes.Add(className);
         }
 
         if (elementStack.Count != 0)
         {
-            elementStack.Peek().Attributes["class"] = string.Join(" ", mwClasses.Select(mw => mw.ClassName));
+            elementStack.Peek().Attributes["class"] = string.Join(" ", classes);
         }
         return this;
     }
