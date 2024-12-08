@@ -9,6 +9,7 @@ public class MicroWind
 
     public override string ToString() => ClassName;
 
+    // Should create .css file with preflight instead in wwwroot/
     public static string Preflight = "*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]{display:none}";
 
     // Amber
@@ -839,6 +840,87 @@ public class MicroWind
     public static string MY16 { get; } = $".{nameof(MY16)}{{{MWSpace.MarginTop}:{MWSpace.S16};{MWSpace.MarginBottom}:{MWSpace.S16};}}";
     public static string MY32 { get; } = $".{nameof(MY32)}{{{MWSpace.MarginTop}:{MWSpace.S32};{MWSpace.MarginBottom}:{MWSpace.S2};}}";
     public static string MYPx { get; } = $".{nameof(MYPx)}{{{MWSpace.MarginTop}:{MWSpace.SPx};{MWSpace.MarginBottom}:{MWSpace.SPx};}}";
+
+    public static string W0 { get; } = $".{nameof(W0)}{{width:0px;}}";
+    public static string WAuto { get; } = $".{nameof(WAuto)}{{width:auto;}}";
+    public static string WPx { get; } = $".{nameof(WPx)}{{width:1px;}}";
+    public static string WFull { get; } = $".{nameof(WFull)}{{width:100%;}}";
+    public static string WScreen { get; } = $".{nameof(WScreen)}{{width:100vw;}}";
+    public static string WMin { get; } = $".{nameof(WMin)}{{width:min-content;}}";
+    public static string WMax { get; } = $".{nameof(WMax)}{{width:max-content;}}";
+    public static string WFit { get; } = $".{nameof(WFit)}{{width:fit-content;}}";
+
+    public static string MinW0 { get; } = $".{nameof(MinW0)}{{min-width:0px;}}";
+    public static string MinWAuto { get; } = $".{nameof(MinWAuto)}{{min-width:auto;}}";
+    public static string MinWPx { get; } = $".{nameof(MinWPx)}{{min-width:1px;}}";
+    public static string MinWFull { get; } = $".{nameof(MinWFull)}{{min-width:100%;}}";
+    public static string MinWScreen { get; } = $".{nameof(MinWScreen)}{{min-width:100vw;}}";
+    public static string MinWMin { get; } = $".{nameof(MinWMin)}{{min-width:min-content;}}";
+    public static string MinWMax { get; } = $".{nameof(MinWMax)}{{min-width:max-content;}}";
+    public static string MinWFit { get; } = $".{nameof(MinWFit)}{{min-width:fit-content;}}";
+
+    public static string MaxW0 { get; } = $".{nameof(MaxW0)}{{max-width:0px;}}";
+    public static string MaxWAuto { get; } = $".{nameof(MaxWAuto)}{{max-width:auto;}}";
+    public static string MaxWPx { get; } = $".{nameof(MaxWPx)}{{max-width:1px;}}";
+    public static string MaxWFull { get; } = $".{nameof(MaxWFull)}{{max-width:100%;}}";
+    public static string MaxWScreen { get; } = $".{nameof(MaxWScreen)}{{max-width:100vw;}}";
+    public static string MaxWMin { get; } = $".{nameof(MaxWMin)}{{max-width:min-content;}}";
+    public static string MaxWMax { get; } = $".{nameof(MaxWMax)}{{max-width:max-content;}}";
+    public static string MaxWFit { get; } = $".{nameof(MaxWFit)}{{max-width:fit-content;}}";
+
+    public static string H0 { get; } = $".{nameof(H0)}{{height:0px;}}";
+    public static string HAuto { get; } = $".{nameof(HAuto)}{{height:auto;}}";
+    public static string HPx { get; } = $".{nameof(HPx)}{{height:1px;}}";
+    public static string HFull { get; } = $".{nameof(HFull)}{{height:100%;}}";
+    public static string HScreen { get; } = $".{nameof(HScreen)}{{height:100vh;}}";
+    public static string HMin { get; } = $".{nameof(HMin)}{{height:min-content;}}";
+    public static string HMax { get; } = $".{nameof(HMax)}{{height:max-content;}}";
+    public static string HFit { get; } = $".{nameof(HFit)}{{height:fit-content;}}";
+
+    public static string MinH0 { get; } = $".{nameof(MinH0)}{{min-height:0px;}}";
+    public static string MinHAuto { get; } = $".{nameof(MinHAuto)}{{min-height:auto;}}";
+    public static string MinHPx { get; } = $".{nameof(MinHPx)}{{min-height:1px;}}";
+    public static string MinHFull { get; } = $".{nameof(MinHFull)}{{min-height:100%;}}";
+    public static string MinHScreen { get; } = $".{nameof(MinHScreen)}{{min-height:100vh;}}";
+    public static string MinHMin { get; } = $".{nameof(MinHMin)}{{min-height:min-content;}}";
+    public static string MinHMax { get; } = $".{nameof(MinHMax)}{{min-height:max-content;}}";
+    public static string MinHFit { get; } = $".{nameof(MinHFit)}{{min-height:fit-content;}}";
+
+    public static string MaxH0 { get; } = $".{nameof(MaxH0)}{{max-height:0px;}}";
+    public static string MaxHAuto { get; } = $".{nameof(MaxHAuto)}{{max-height:auto;}}";
+    public static string MaxHPx { get; } = $".{nameof(MaxHPx)}{{max-height:1px;}}";
+    public static string MaxHFull { get; } = $".{nameof(MaxHFull)}{{max-height:100%;}}";
+    public static string MaxHScreen { get; } = $".{nameof(MaxHScreen)}{{max-height:100vh;}}";
+    public static string MaxHMin { get; } = $".{nameof(MaxHMin)}{{max-height:min-content;}}";
+    public static string MaxHMax { get; } = $".{nameof(MaxHMax)}{{max-height:max-content;}}";
+    public static string MaxHFit { get; } = $".{nameof(MaxHFit)}{{max-height:fit-content;}}";
+
+    public static string Size0 { get; } = $".{nameof(Size0)}{{width:0px;height:0px;}}";
+    public static string SizeAuto { get; } = $".{nameof(SizeAuto)}{{width:auto;height:auto;}}";
+    public static string SizePx { get; } = $".{nameof(SizePx)}{{width:1px;height:1px;}}";
+    public static string SizeFull { get; } = $".{nameof(SizeFull)}{{width:100%;height:100%;}}";
+    public static string SizeMin { get; } = $".{nameof(SizeMin)}{{width:min-content;height:min-content;}}";
+    public static string SizeMax { get; } = $".{nameof(SizeMax)}{{width:max-content;height:max-content;}}";
+    public static string SizeFit { get; } = $".{nameof(SizeFit)}{{width:fit-content;height:fit-content;}}";
+
+    public static string MinSize0 { get; } = $".{nameof(MinSize0)}{{min-width:0px;min-height:0px;}}";
+    public static string MinSizeAuto { get; } = $".{nameof(MinSizeAuto)}{{min-width:auto;min-height:auto;}}";
+    public static string MinSizePx { get; } = $".{nameof(MinSizePx)}{{min-width:1px;min-height:1px;}}";
+    public static string MinSizeFull { get; } = $".{nameof(MinSizeFull)}{{min-width:100%;min-height:100%;}}";
+    public static string MinSizeMin { get; } = $".{nameof(MinSizeMin)}{{min-width:min-content;min-height:min-content;}}";
+    public static string MinSizeMax { get; } = $".{nameof(MinSizeMax)}{{min-width:max-content;min-height:max-content;}}";
+    public static string MinSizeFit { get; } = $".{nameof(MinSizeFit)}{{min-width:fit-content;min-height:fit-content;}}";
+
+    public static string MaxSize0 { get; } = $".{nameof(MaxSize0)}{{max-width:0px;max-height:0px;}}";
+    public static string MaxSizeAuto { get; } = $".{nameof(MaxSizeAuto)}{{max-width:auto;max-height:auto;}}";
+    public static string MaxSizePx { get; } = $".{nameof(MaxSizePx)}{{max-width:1px;max-height:1px;}}";
+    public static string MaxSizeFull { get; } = $".{nameof(MaxSizeFull)}{{max-width:100%;max-height:100%;}}";
+    public static string MaxSizeMin { get; } = $".{nameof(MaxSizeMin)}{{max-width:min-content;max-height:min-content;}}";
+    public static string MaxSizeMax { get; } = $".{nameof(MaxSizeMax)}{{max-width:max-content;max-height:max-content;}}";
+    public static string MaxSizeFit { get; } = $".{nameof(MaxSizeFit)}{{max-width:fit-content;max-height:fit-content;}}";
+
+    // Part 4: Typography
+
 
 
 }
