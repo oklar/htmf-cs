@@ -8,7 +8,7 @@ public class HtmfTemplate<T>
 {
     public Htmf FromBuilder { get; }
     public Element2 TemplateElementRef { get; private set; }
-    public string Id { get; } = RandomId();
+    public string Id { get; set; } = RandomId();
 
     public HtmfTemplate(Htmf htmf, Func<HtmfTemplate<T>, HtmfTemplate<T>> nestedBuilderFunc)
     {
@@ -284,22 +284,21 @@ public class Htmf
         return this;
     }
 
-    public Htmf CreateTemplate<T>(Func<HtmfTemplate<T>, HtmfTemplate<T>> nestedBuilderFunc, Func<string, string> templateIdFunc)
+    public Htmf CreateTemplate<T>(Func<HtmfTemplate<T>, HtmfTemplate<T>> nestedBuilderFunc, string templateId)
     {
         var htmfTemplate = new HtmfTemplate<T>(this, nestedBuilderFunc);
-        templateIdFunc(htmfTemplate.Id);
+        htmfTemplate.Id = templateId;
         return this;
     }
 
-    public Htmf CreateTemplate<T>(List<T> list, Func<HtmfTemplate<T>, HtmfTemplate<T>> nestedBuilderFunc, Func<string, string> templateIdFunc)
+    public Htmf CreateTemplate<T>(List<T> list, Func<HtmfTemplate<T>, HtmfTemplate<T>> nestedBuilderFunc, string templateId)
     {
         var htmfTemplate = new HtmfTemplate<T>(this, nestedBuilderFunc);
-        var templateId = htmfTemplate.Id;
+        htmfTemplate.Id = templateId;
 
         var templateElement = htmfTemplate.TemplateElementRef;
         templateElement.Attributes["id"] = templateId;
 
-        templateIdFunc(templateId);
 
         var originalChildren = new List<Element2>(templateElement.Children);
         foreach (var item in list)
